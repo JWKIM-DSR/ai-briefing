@@ -30,9 +30,6 @@ Claude Code 운영 지침. 철학은 SOUL.md, 사람용 안내는 README.md.
 1. **한국어**: 출력·파일명·이슈 본문 모두 한국어 (고유명사 제외)
 2. **중복 금지**: 오늘 날짜 브리핑 파일이 이미 있으면 생성하지 않는다
 3. **index.json 영구 보관**: HTML은 2주 후 삭제, index.json은 삭제하지 않는다
-4. **이슈 파일**: `gh issue create`는 반드시 `--body-file $env:TEMP\gh_issue_N.txt` 사용
-5. **이슈 실패**: 개별 등록 실패해도 나머지 계속 진행
-6. **PATH 갱신**: gh CLI 실행 전 `$env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")`
 
 ## Claude Code 메모
 
