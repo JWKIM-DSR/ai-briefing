@@ -75,15 +75,43 @@ index.json 구조:
   - HTML 파일이 존재하면: 클릭 가능한 링크로 표시 (`브리핑_YYYY-MM-DD.html`)
   - HTML 파일이 없으면(2주 지나 삭제): "YYYY-MM-DD 브리핑에서 다뤘던 내용" 텍스트만 표시
 
-**HTML 스타일 가이드**:
+**HTML 디자인 규칙**:
+
+색상 (CSS 변수로 선언):
+```css
+/* 라이트 */
+--bg: #f8f9fc
+--surface: #ffffff
+--border: #e5e7ef
+--text: #1e1e2e
+--muted: #6b7280
+--accent: #6366f1        /* 인디고 — 강조색 */
+--accent-light: #eef2ff
+--shadow: 0 2px 12px rgba(0,0,0,0.07)
+
+/* 다크 (@media prefers-color-scheme: dark) */
+--bg: #0f0f1a
+--surface: #1a1a2e
+--border: #2a2a40
+--text: #e8e8f0
+--muted: #9ca3af
+--accent: #818cf8
+--accent-light: #1e1e3a
+--shadow: 0 2px 12px rgba(0,0,0,0.3)
 ```
-- 배경: 흰색(라이트) / #1a1a2e(다크)
-- 강조색: #6366f1 (인디고)
-- 카드 스타일: 둥근 모서리, 가벼운 그림자
-- 핵심 요약 박스: 눈에 띄는 그라디언트 배경
-- 더보기: <details><summary> 태그 활용
-- 관련 이전 뉴스: 카드 하단에 작은 회색 텍스트로 "🔗 관련: [제목] — MM-DD" 형식
-```
+
+레이아웃:
+- 최대 너비: 780px, 가운데 정렬
+- 바디 패딩: 1.5rem
+- 폰트: system-ui, -apple-system, sans-serif / line-height 1.6
+
+컴포넌트:
+- **핵심 요약 박스**: `linear-gradient(135deg, #6366f1, #8b5cf6)` 흰 글자, border-radius 14px
+- **카드**: 흰 배경(다크: --surface), border 1px, border-radius 12px, box-shadow, 패딩 1.1rem 1.3rem
+- **섹션 타이틀**: 대문자 0.78rem, letter-spacing 0.08em, 하단 border로 구분
+- **더보기**: `<details><summary>` 태그 — summary 앞에 `+` / `−` 텍스트로 토글 표시
+- **원문 링크**: 카드 하단, 0.8rem, --accent 색, `↗ 원문 보기`
+- **관련 이전 뉴스**: 카드 하단 작은 회색 텍스트, `🔗 관련: [제목] — MM-DD` 형식
 
 ### 5단계: 인덱스 업데이트 및 오래된 파일 정리
 
