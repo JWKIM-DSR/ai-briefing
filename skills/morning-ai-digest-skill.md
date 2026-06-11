@@ -1,6 +1,7 @@
 ---
 name: morning-ai-digest
 description: 매일 아침 7시 AI 업계 동향을 수집해 한국어 HTML 브리핑 파일 생성
+shell: powershell
 ---
 
 당신은 AI 업계 동향을 매일 아침 브리핑해주는 에이전트입니다.
@@ -75,39 +76,89 @@ index.json 구조:
   - HTML 파일이 존재하면: 클릭 가능한 링크로 표시 (`브리핑_YYYY-MM-DD.html`)
   - HTML 파일이 없으면(2주 지나 삭제): "YYYY-MM-DD 브리핑에서 다뤘던 내용" 텍스트만 표시
 
-**HTML 디자인 규칙**:
+**HTML 디자인 규칙** (Virgil Abloh / Off-White 미학):
+
+폰트:
+```html
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+```
+- 본문·헤드라인: `'Josefin Sans', sans-serif`
+- 메타·태그·소스: `'Space Mono', monospace`
 
 색상 (CSS 변수):
 ```css
-/* 라이트 */
---bg: #f4f5f9;  --surface: #ffffff;  --border: #e2e4ef;
---text: #18182a;  --muted: #6b7280;  --shadow: 0 1px 8px rgba(0,0,0,.06);
-
-/* 다크 */
---bg: #0d0d1a;  --surface: #16162a;  --border: #252540;
---text: #e8e8f4;  --muted: #8b8ba8;  --shadow: 0 1px 8px rgba(0,0,0,.35);
-
-/* 카테고리 색 (고정값, 다크모드 불변) */
---c-company:  #3b82f6;   /* 기업 소식 — 파랑 */
---c-model:    #8b5cf6;   /* 모델·기술 — 보라 */
---c-policy:   #f59e0b;   /* 정책·산업 — 주황 */
---c-research: #10b981;   /* 연구·논문 — 초록 */
+:root {
+  --acc: #BA7517;        /* 앰버 포인트 컬러 (라이트/다크 공통) */
+  --bg: #f7f6f3;
+  --surface: #ffffff;
+  --border: #e0ddd6;
+  --text: #0a0a0a;
+  --muted: #6b6b6b;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f0f0f;
+    --surface: #171717;
+    --border: #2a2a2a;
+    --text: #f0f0f0;
+    --muted: #888888;
+  }
+}
 ```
 
 레이아웃:
-- 최대 너비: 740px, 가운데 정렬 / 바디 패딩: 1.25rem 1rem
-- 폰트: system-ui, -apple-system, "Segoe UI" / font-size 15px / line-height 1.6
+- 최대 너비: 780px, 가운데 정렬
+- 바디 패딩: 1.5rem 1rem
+- `border-radius: 0` 전체 (Off-White 스타일 — 모서리 둥글게 하지 않음)
+- 카드 그리드 간격: `gap: 1px; background: var(--border)` (1px 그리드라인)
 
 컴포넌트:
-- **헤더**: `h1` + 날짜·뉴스 건수 한 줄 (`flex, align-items: baseline`)
-- **핵심 3줄 박스**: `linear-gradient(135deg, #4f46e5, #7c3aed)` / 번호는 원형 뱃지(반투명 흰색), 항목별 flex row
-- **섹션 구분**: 컬러 dot + 텍스트 + 가로선(`flex-grow`) — 단색 border 대신
-- **카드**: `border-left: 4px solid var(--cat-color)` 왼쪽 컬러 스트라이프 / border-radius 12px
-- **카테고리 태그**: 카드 우상단 pill — `background: color-mix(in srgb, var(--cat-color) 12%, transparent)`
-- **요약**: 항상 표시 (`card-summary`) — 접기 대상은 상세 내용만
-- **더보기**: `<details><summary>` — `▸` / `▾` 토글, 색은 `var(--cat-color)`
-- **원문 링크**: `↗ 원문` (상세 내용 안, `var(--cat-color)` 색)
-- **관련 이전 뉴스**: 작은 pill 배지 모음 (`border-radius 6px, font-size .73rem`)
+
+**헤더**:
+```html
+<header>
+  <div class="lbl"><!-- "ARTIFICIAL INTELLIGENCE" / DAILY BRIEFING --></div>
+  <div class="ttl">"AI" <span class="acc">DIGEST</span></div>
+  <div class="meta"><!-- 날짜 · 시간 KST · VOL.N --></div>
+  <!-- 앰버 사선 스트라이프: height 3px, repeating-linear-gradient(90deg, var(--acc) 0 8px, transparent 8px 14px) -->
+</header>
+```
+- `lbl`: Space Mono, 10px, letter-spacing .15em, muted
+- `ttl`: Josefin Sans 700, 38px, letter-spacing -.01em — `"AI"` 따옴표 포함
+- `acc`: color var(--acc) (앰버)
+- `meta`: Space Mono, 10px, muted, 우측 정렬
+
+**통계 스트립** (헤더 바로 아래):
+- 4컬럼 그리드 / `gap: 1px; background: var(--border)`
+- 각 셀: surface 배경, 숫자(22px 700), 라벨(Space Mono 9px, `"STORIES"` 형식 따옴표 포함)
+
+**핵심 3줄 박스**:
+- surface 배경, `border: 2px solid var(--text)`, border-radius 0
+- 번호: Space Mono, 앰버 색, `01. 02. 03.` 형식
+- 텍스트: Josefin Sans 600, 14px
+- 라벨: `"TODAY'S KEY POINTS"` — Space Mono, 10px, muted
+
+**카테고리 필터 버튼**:
+- `border: 1px solid var(--border)`, border-radius 0
+- active/hover: `background: var(--text); color: var(--surface)`
+- 카테고리명 따옴표 감싸기: `"ALL"` `"기업소식"` `"모델·기술"` `"정책·산업"` `"연구·논문"`
+
+**카드 그리드**:
+- `display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1px; background: var(--border)`
+- 각 카드: surface 배경, padding 1.1rem
+
+**카드 내부**:
+- 카테고리: Space Mono, 10px, var(--acc), 따옴표 — `"기업소식"`
+- 헤드라인: Josefin Sans 700, 14px, line-height 1.4
+- 요약 포인트: `—` 불릿 (앰버 색), Josefin Sans 300, 12px / `<ul>` 스타일 커스텀
+- 더보기: `<details><summary>` — `▸ 상세 보기` / `▾ 닫기`, Josefin Sans 600, 앰버 색
+- 원문 링크: `↗ 원문` — Space Mono, 10px
+- 카드 하단 푸터: Space Mono 9px — 좌측 출처, 우측 시간
+- 관련 이전 뉴스: `border: 1px solid var(--border)` pill, Space Mono 9px, border-radius 0
+
+**섹션 구분자**:
+- `"카테고리명"` + 가로선 — Josefin Sans 700, 12px, letter-spacing .15em
+- `border-bottom: 1px solid var(--border)` 대신 `background: var(--border); height: 1px`
 
 ### 5단계: 인덱스 업데이트 및 오래된 파일 정리
 

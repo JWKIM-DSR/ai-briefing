@@ -1,5 +1,6 @@
 ---
 name: optimize-docs
+shell: powershell
 description: |
   프로젝트 문서(CLAUDE.md, README.md, SOUL.md)와 스킬 파일을 검토해 중복 사실을 제거하고,
   각 사실이 정확히 한 문서에만 존재하도록 최적화한 뒤 git commit까지 수행한다.

@@ -34,8 +34,16 @@ Claude Code 운영 지침. 철학은 SOUL.md, 사람용 안내는 README.md.
 5. **이슈 실패**: 개별 등록 실패해도 나머지 계속 진행
 6. **PATH 갱신**: gh CLI 실행 전 `$env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")`
 
-## Claude Code 메모 (2026-06-11)
+## Claude Code 메모
 
 - `skills/` 자동 로드됨
-- 스킬 frontmatter: `disallowed-tools`, `experimental` 사용 가능
-- 훅: `PostToolUse`, `Stop`, `SubagentStop` 사용 가능
+- 스킬 frontmatter 사용 가능 필드:
+  `name`, `description`, `disallowed-tools`, `allowed-tools`,
+  `effort`(low/medium/high/xhigh/max), `context`(fork), `paths`(글롭 패턴),
+  `shell`(bash/powershell), `model`, `argument-hint`
+  — `experimental`은 폐지됨 (무시됨)
+- 훅 이벤트:
+  - `PostToolUse` — 도구 실행 후 (`updatedToolOutput`으로 결과 수정 가능)
+  - `Stop` — 응답 완료 시 차단/피드백 (`decision: block`, `additionalContext`)
+  - `SubagentStop` — 자식 에이전트 완료 시 (`agent_id`, `agent_type` 필드 포함)
+- `.claude/rules/*.md` — `paths` frontmatter로 경로별 조건부 규칙 지정 가능
