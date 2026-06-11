@@ -77,41 +77,37 @@ index.json 구조:
 
 **HTML 디자인 규칙**:
 
-색상 (CSS 변수로 선언):
+색상 (CSS 변수):
 ```css
 /* 라이트 */
---bg: #f8f9fc
---surface: #ffffff
---border: #e5e7ef
---text: #1e1e2e
---muted: #6b7280
---accent: #6366f1        /* 인디고 — 강조색 */
---accent-light: #eef2ff
---shadow: 0 2px 12px rgba(0,0,0,0.07)
+--bg: #f4f5f9;  --surface: #ffffff;  --border: #e2e4ef;
+--text: #18182a;  --muted: #6b7280;  --shadow: 0 1px 8px rgba(0,0,0,.06);
 
-/* 다크 (@media prefers-color-scheme: dark) */
---bg: #0f0f1a
---surface: #1a1a2e
---border: #2a2a40
---text: #e8e8f0
---muted: #9ca3af
---accent: #818cf8
---accent-light: #1e1e3a
---shadow: 0 2px 12px rgba(0,0,0,0.3)
+/* 다크 */
+--bg: #0d0d1a;  --surface: #16162a;  --border: #252540;
+--text: #e8e8f4;  --muted: #8b8ba8;  --shadow: 0 1px 8px rgba(0,0,0,.35);
+
+/* 카테고리 색 (고정값, 다크모드 불변) */
+--c-company:  #3b82f6;   /* 기업 소식 — 파랑 */
+--c-model:    #8b5cf6;   /* 모델·기술 — 보라 */
+--c-policy:   #f59e0b;   /* 정책·산업 — 주황 */
+--c-research: #10b981;   /* 연구·논문 — 초록 */
 ```
 
 레이아웃:
-- 최대 너비: 780px, 가운데 정렬
-- 바디 패딩: 1.5rem
-- 폰트: system-ui, -apple-system, sans-serif / line-height 1.6
+- 최대 너비: 740px, 가운데 정렬 / 바디 패딩: 1.25rem 1rem
+- 폰트: system-ui, -apple-system, "Segoe UI" / font-size 15px / line-height 1.6
 
 컴포넌트:
-- **핵심 요약 박스**: `linear-gradient(135deg, #6366f1, #8b5cf6)` 흰 글자, border-radius 14px
-- **카드**: 흰 배경(다크: --surface), border 1px, border-radius 12px, box-shadow, 패딩 1.1rem 1.3rem
-- **섹션 타이틀**: 대문자 0.78rem, letter-spacing 0.08em, 하단 border로 구분
-- **더보기**: `<details><summary>` 태그 — summary 앞에 `+` / `−` 텍스트로 토글 표시
-- **원문 링크**: 카드 하단, 0.8rem, --accent 색, `↗ 원문 보기`
-- **관련 이전 뉴스**: 카드 하단 작은 회색 텍스트, `🔗 관련: [제목] — MM-DD` 형식
+- **헤더**: `h1` + 날짜·뉴스 건수 한 줄 (`flex, align-items: baseline`)
+- **핵심 3줄 박스**: `linear-gradient(135deg, #4f46e5, #7c3aed)` / 번호는 원형 뱃지(반투명 흰색), 항목별 flex row
+- **섹션 구분**: 컬러 dot + 텍스트 + 가로선(`flex-grow`) — 단색 border 대신
+- **카드**: `border-left: 4px solid var(--cat-color)` 왼쪽 컬러 스트라이프 / border-radius 12px
+- **카테고리 태그**: 카드 우상단 pill — `background: color-mix(in srgb, var(--cat-color) 12%, transparent)`
+- **요약**: 항상 표시 (`card-summary`) — 접기 대상은 상세 내용만
+- **더보기**: `<details><summary>` — `▸` / `▾` 토글, 색은 `var(--cat-color)`
+- **원문 링크**: `↗ 원문` (상세 내용 안, `var(--cat-color)` 색)
+- **관련 이전 뉴스**: 작은 pill 배지 모음 (`border-radius 6px, font-size .73rem`)
 
 ### 5단계: 인덱스 업데이트 및 오래된 파일 정리
 

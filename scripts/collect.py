@@ -155,17 +155,27 @@ def make_related_html(related: list[dict]) -> str:
     return '<div class="related">' + "".join(parts) + "</div>"
 
 
-def make_card(article: dict, related_html: str) -> str:
+CAT_CLASS = {"기업 소식": "company", "모델·기술": "model", "정책·산업": "policy", "연구·논문": "research"}
+CAT_LABEL = {"기업 소식": "기업", "모델·기술": "모델", "정책·산업": "정책", "연구·논문": "연구"}
+CAT_ICON  = {"기업 소식": "🏢", "모델·기술": "🧠", "정책·산업": "📋", "연구·논문": "🔬"}
+CAT_DOT   = {"기업 소식": "#3b82f6", "모델·기술": "#8b5cf6", "정책·산업": "#f59e0b", "연구·논문": "#10b981"}
+
+
+def make_card(article: dict, cat: str, related_html: str) -> str:
+    cls = CAT_CLASS.get(cat, "company")
+    lbl = CAT_LABEL.get(cat, cat)
     return f"""
-    <div class="card">
-      <div class="card-title">{article['title']}</div>
-      <div class="card-summary">{article['summary'][:120]}…</div>
-      <div class="card-meta">{article['source']}</div>
+    <div class="card {cls}">
+      <div class="card-head">
+        <div class="card-title">{article['title']}</div>
+        <span class="cat-tag">{lbl}</span>
+      </div>
+      <div class="card-summary">{article['summary'][:160]}</div>
       <details>
-        <summary>더보기</summary>
+        <summary>상세 보기</summary>
         <div class="detail-body">
           {article['summary']}
-          <a class="source-link" href="{article['link']}" target="_blank">↗ 원문 보기</a>
+          <a class="source-link" href="{article['link']}" target="_blank">↗ 원문</a>
         </div>
       </details>
       {related_html}
@@ -173,32 +183,40 @@ def make_card(article: dict, related_html: str) -> str:
 
 
 STYLE = """
-:root{--bg:#f8f9fc;--surface:#fff;--border:#e5e7ef;--text:#1e1e2e;--muted:#6b7280;--accent:#6366f1;--accent-light:#eef2ff;--shadow:0 2px 12px rgba(0,0,0,.07)}
-@media(prefers-color-scheme:dark){:root{--bg:#0f0f1a;--surface:#1a1a2e;--border:#2a2a40;--text:#e8e8f0;--muted:#9ca3af;--accent:#818cf8;--accent-light:#1e1e3a;--shadow:0 2px 12px rgba(0,0,0,.3)}}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;line-height:1.6;padding:1.5rem}
-.container{max-width:780px;margin:0 auto}
-header h1{font-size:1.6rem;font-weight:700;color:var(--accent)}
-header p{color:var(--muted);font-size:.9rem;margin-top:.3rem}
-.summary-box{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:14px;padding:1.4rem 1.6rem;margin:1.5rem 0}
-.summary-box h2{font-size:1rem;margin-bottom:.8rem;opacity:.9}
-.summary-box ol{padding-left:1.2rem}
-.summary-box li{margin-bottom:.4rem;font-size:.95rem}
-.section-title{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:2rem 0 .9rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.3rem;margin-bottom:.85rem;box-shadow:var(--shadow)}
-.card-title{font-weight:600;font-size:.97rem;margin-bottom:.3rem}
-.card-summary{font-size:.88rem;color:var(--muted);margin-bottom:.3rem}
-.card-meta{font-size:.75rem;color:var(--accent);margin-bottom:.5rem}
-details summary{font-size:.83rem;color:var(--accent);cursor:pointer;user-select:none;list-style:none}
-details summary::before{content:'+ '}
-details[open] summary::before{content:'− '}
-.detail-body{margin-top:.7rem;font-size:.87rem;border-top:1px solid var(--border);padding-top:.7rem}
-.source-link{display:inline-block;margin-top:.5rem;font-size:.8rem;color:var(--accent);text-decoration:none}
-.source-link:hover{text-decoration:underline}
-.related{margin-top:.6rem;font-size:.78rem;color:var(--muted)}
-.related-link{display:block;color:var(--accent);text-decoration:none;margin-top:.2rem}
-.related-text{display:block;margin-top:.2rem}
-footer{margin-top:3rem;text-align:center;font-size:.78rem;color:var(--muted)}
+:root{--bg:#f4f5f9;--surface:#fff;--border:#e2e4ef;--text:#18182a;--muted:#6b7280;--shadow:0 1px 8px rgba(0,0,0,.06);--c-company:#3b82f6;--c-model:#8b5cf6;--c-policy:#f59e0b;--c-research:#10b981}
+@media(prefers-color-scheme:dark){:root{--bg:#0d0d1a;--surface:#16162a;--border:#252540;--text:#e8e8f4;--muted:#8b8ba8;--shadow:0 1px 8px rgba(0,0,0,.35)}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.6;padding:1.25rem 1rem}
+.container{max-width:740px;margin:0 auto}
+header{display:flex;align-items:baseline;gap:.75rem;margin-bottom:1.25rem}
+header h1{font-size:1.25rem;font-weight:800;letter-spacing:-.02em}
+header .date{color:var(--muted);font-size:.82rem}
+.top3{background:linear-gradient(135deg,#4f46e5,#7c3aed);border-radius:14px;padding:1.25rem 1.4rem;margin-bottom:1.75rem;color:#fff}
+.top3-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.75;margin-bottom:.9rem}
+.top3-item{display:flex;align-items:flex-start;gap:.75rem;margin-bottom:.65rem}
+.top3-item:last-child{margin-bottom:0}
+.top3-num{flex-shrink:0;width:1.4rem;height:1.4rem;border-radius:50%;background:rgba(255,255,255,.2);font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:.1rem}
+.top3-text{font-size:.92rem;line-height:1.45}
+.section{display:flex;align-items:center;gap:.5rem;margin:1.75rem 0 .75rem;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.section-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.section-line{flex:1;height:1px;background:var(--border)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;border-left:4px solid var(--cat-color,#6366f1);padding:.95rem 1.1rem;margin-bottom:.65rem;box-shadow:var(--shadow)}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem;margin-bottom:.35rem}
+.card-title{font-weight:650;font-size:.95rem;line-height:1.4;flex:1}
+.cat-tag{flex-shrink:0;font-size:.67rem;font-weight:700;padding:.15rem .5rem;border-radius:20px;background:color-mix(in srgb,var(--cat-color,#6366f1) 12%,transparent);color:var(--cat-color,#6366f1);margin-top:.1rem;white-space:nowrap}
+.card-summary{font-size:.86rem;color:var(--muted);line-height:1.5;margin-bottom:.55rem}
+details summary{font-size:.8rem;color:var(--cat-color,#6366f1);cursor:pointer;user-select:none;list-style:none;opacity:.85}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"▸ ";font-size:.65rem}
+details[open] summary::before{content:"▾ "}
+.detail-body{margin-top:.65rem;padding-top:.65rem;border-top:1px solid var(--border);font-size:.86rem;line-height:1.65}
+.source-link{display:inline-block;margin-top:.45rem;font-size:.78rem;color:var(--cat-color,#6366f1);text-decoration:none;opacity:.8}
+.source-link:hover{opacity:1;text-decoration:underline}
+.related{margin-top:.55rem;display:flex;flex-wrap:wrap;gap:.3rem}
+.related a,.related span{font-size:.73rem;color:var(--muted);background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.1rem .45rem;text-decoration:none}
+.related a:hover{color:var(--text)}
+.company{--cat-color:var(--c-company)}.model{--cat-color:var(--c-model)}.policy{--cat-color:var(--c-policy)}.research{--cat-color:var(--c-research)}
+footer{margin-top:2.5rem;text-align:center;font-size:.74rem;color:var(--muted);opacity:.6}
 """
 
 
@@ -210,19 +228,35 @@ def generate_html(articles: list[dict], index: list) -> str:
         a["related"] = find_related(index, a)
         by_cat.setdefault(cat, []).append(a)
 
-    # 핵심 3줄: 임팩트(카테고리 우선순위) + 언론 커버리지(한 번에 여러 소스 언급)
+    # 핵심 3줄: 임팩트(카테고리 우선순위) + 언론 커버리지
     top3 = sorted(articles, key=lambda a: (
         ["모델·기술", "기업 소식", "정책·산업", "연구·논문"].index(categorize(a))
     ))[:3]
-    top3_html = "\n".join(f"<li>{a['title']}</li>" for a in top3)
+    top3_items = "\n".join(
+        f'<div class="top3-item"><div class="top3-num">{i+1}</div>'
+        f'<div class="top3-text">{a["title"]}</div></div>'
+        for i, a in enumerate(top3)
+    )
 
     sections_html = ""
-    icons = {"기업 소식": "🏢", "모델·기술": "🧠", "정책·산업": "📋", "연구·논문": "🔬"}
     for cat, cat_articles in by_cat.items():
         if not cat_articles:
             continue
-        cards = "".join(make_card(a, make_related_html(a["related"])) for a in cat_articles)
-        sections_html += f'<div class="section-title">{icons.get(cat,"")} {cat}</div>{cards}'
+        dot_color = CAT_DOT.get(cat, "#6366f1")
+        icon = CAT_ICON.get(cat, "")
+        section_header = (
+            f'<div class="section">'
+            f'<div class="section-dot" style="background:{dot_color}"></div>'
+            f'{icon} {cat}'
+            f'<div class="section-line"></div></div>'
+        )
+        cards = "".join(make_card(a, cat, make_related_html(a["related"])) for a in cat_articles)
+        sections_html += section_header + cards
+
+    total = sum(len(v) for v in by_cat.values())
+    date_str = datetime.now().strftime('%Y년 %m월 %d일 (%a)').replace(
+        'Mon','월').replace('Tue','화').replace('Wed','수').replace('Thu','목'
+        ).replace('Fri','금').replace('Sat','토').replace('Sun','일')
 
     return f"""<!DOCTYPE html>
 <html lang="ko">
@@ -236,11 +270,11 @@ def generate_html(articles: list[dict], index: list) -> str:
 <div class="container">
   <header>
     <h1>🤖 AI 동향 브리핑</h1>
-    <p>{datetime.now().strftime('%Y년 %m월 %d일')} · RSS 자동 수집</p>
+    <span class="date">{date_str} &middot; 뉴스 {total}건</span>
   </header>
-  <div class="summary-box">
-    <h2>🔥 오늘의 핵심 3줄</h2>
-    <ol>{top3_html}</ol>
+  <div class="top3">
+    <div class="top3-label">🔥 오늘의 핵심</div>
+    {top3_items}
   </div>
   {sections_html}
   <footer>AI 동향 브리핑 · {TODAY} · scripts/collect.py 자동 생성</footer>
