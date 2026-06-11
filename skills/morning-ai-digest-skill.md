@@ -109,9 +109,9 @@ index.json은 삭제하지 않고 계속 누적합니다 (가벼운 파일이므
 ### 6단계: 브라우저 실행
 생성된 HTML 파일을 기본 브라우저로 자동으로 여세요.
 PowerShell과 Bash 양쪽에서 동작하도록 아래 방식을 사용합니다.
-**YYYY-MM-DD 자리에 오늘 실제 날짜(예: 2026-06-11)를 반드시 삽입하세요.**
+`YYYY-MM-DD`를 오늘 실제 날짜로 치환해서 실행하세요.
 ```
-cmd /c start "" "C:\Users\Admin\Desktop\AI동향\브리핑_2026-06-11.html"
+cmd /c start "" "C:\Users\Admin\Desktop\AI동향\브리핑_YYYY-MM-DD.html"
 ```
 
 ## 출력 기준
