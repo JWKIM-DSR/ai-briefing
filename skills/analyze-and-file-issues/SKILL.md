@@ -37,9 +37,12 @@ $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";
 순서대로 확인:
 1. `gh auth status` — 로그인 안 된 경우 `gh auth login` 안내 후 중단
 2. gh CLI 없는 경우 `winget install GitHub.cli` 안내 후 중단
-3. `git remote -v`로 레포 URL 확인 후 아래 방식으로 OWNER/REPO 추출:
+3. `git remote get-url origin`으로 레포 URL 확인 후 OWNER/REPO 추출:
    ```powershell
-   $repo = (git remote get-url origin) -replace '.*github\.com[:/](.+?)(?:\.git)?$', '$1'
+   $remoteUrl = git remote get-url origin
+   # HTTPS: https://github.com/OWNER/REPO.git
+   # SSH:   git@github.com:OWNER/REPO.git
+   $repo = $remoteUrl -replace '^.*github\.com[:/](.+?)(?:\.git)?$', '$1'
    # 결과 예시: JWKIM-DSR/ai-briefing
    ```
    레포 없으면 사용자에게 URL 직접 입력 요청
@@ -80,9 +83,10 @@ $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";
 `--body`에 직접 긴 텍스트를 넣으면 대괄호·특수문자·줄바꿈에서 파싱 오류가 발생한다.
 
 ```powershell
-# 임시 파일 경로 — $env:TEMP 사용 (사용자 이름에 무관하게 자동으로 올바른 경로 지정)
-$tmpFile = "$env:TEMP\gh_issue_1.txt"
-$commentFile = "$env:TEMP\gh_comment_1.txt"
+# 임시 파일 경로 — 타임스탬프로 고유화 (동시 실행 시 충돌 방지)
+$ts = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+$tmpFile     = "$env:TEMP\gh_issue_${ts}_N.txt"   # N을 이슈 순번으로 교체
+$commentFile = "$env:TEMP\gh_comment_${ts}_N.txt"
 ```
 
 등록 순서: 버그 먼저, 개선점 나중에 (심각도 높은 것부터).
@@ -122,12 +126,15 @@ if ($url) { gh issue comment ($url -split '/')[-1] --repo $repo --body-file $com
 등록 완료 후 표 형태로 요약 출력:
 
 ```
-| #  | 제목                     | 종류           | 우선순위 | 링크  |
-|----|--------------------------|----------------|----------|-------|
-| 8  | index.json 중복 항목     | 🐛 Bug         | 🔴 높음  | #8    |
-| 9  | 날짜 플레이스홀더 미치환 | 🐛 Bug         | 🟡 중간  | #9    |
-| 11 | 키워드 과매칭 위험        | ✨ Enhancement | 🟡 중간  | #11   |
+| #  | 제목                     | 종류           | 우선순위 | 링크                                           |
+|----|--------------------------|----------------|----------|------------------------------------------------|
+| 8  | index.json 중복 항목     | 🐛 Bug         | 🔴 높음  | [#8](https://github.com/OWNER/REPO/issues/8)  |
+| 9  | 날짜 플레이스홀더 미치환 | 🐛 Bug         | 🟡 중간  | [#9](https://github.com/OWNER/REPO/issues/9)  |
+| 11 | 키워드 과매칭 위험        | ✨ Enhancement | 🟡 중간  | [#11](https://github.com/OWNER/REPO/issues/11)|
 ```
+
+링크 열의 URL은 `gh issue create` 가 반환한 실제 URL을 그대로 사용한다 (`$url` 변수).
+`#번호` 텍스트만 쓰면 클릭할 수 없으므로 반드시 `[#N](URL)` 마크다운 링크로 작성한다.
 
 버그가 있으면 "지금 바로 수정할까요?" 라고 물어본다.
 

@@ -161,62 +161,95 @@ CAT_ICON  = {"기업 소식": "🏢", "모델·기술": "🧠", "정책·산업"
 CAT_DOT   = {"기업 소식": "#3b82f6", "모델·기술": "#8b5cf6", "정책·산업": "#f59e0b", "연구·논문": "#10b981"}
 
 
+def _img_prompt(title: str) -> str:
+    """카드 제목 → Pollinations.ai URL (AI 이미지 자동 생성)"""
+    import urllib.parse
+    prompt = urllib.parse.quote(title[:80] + " futuristic tech dark")
+    return (
+        f"https://image.pollinations.ai/prompt/{prompt}"
+        "?width=560&height=280&nologo=true&model=flux"
+    )
+
+
 def make_card(article: dict, cat: str, related_html: str) -> str:
     cls = CAT_CLASS.get(cat, "company")
     lbl = CAT_LABEL.get(cat, cat)
+    img_url = _img_prompt(article["title"])
     return f"""
     <div class="card {cls}">
-      <div class="card-head">
-        <div class="card-title">{article['title']}</div>
-        <span class="cat-tag">{lbl}</span>
-      </div>
-      <div class="card-summary">{article['summary'][:160]}</div>
-      <details>
-        <summary>상세 보기</summary>
-        <div class="detail-body">
-          {article['summary']}
+      <img class="card-img"
+        src="{img_url}"
+        alt="{lbl}"
+        loading="lazy"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="card-img-placeholder" style="display:none">{CAT_ICON.get(cat,'📰')}</div>
+      <div class="card-body">
+        <div class="card-head">
+          <div class="card-title">{article['title']}</div>
+          <span class="cat-tag">{lbl}</span>
+        </div>
+        <div class="card-summary">{article['summary'][:160]}</div>
+        <div class="card-footer">
+          <details>
+            <summary>상세 보기</summary>
+            <div class="detail-body">
+              {article['summary']}
+              <a class="source-link" href="{article['link']}" target="_blank">↗ 원문</a>
+            </div>
+          </details>
           <a class="source-link" href="{article['link']}" target="_blank">↗ 원문</a>
         </div>
-      </details>
-      {related_html}
+        {related_html}
+      </div>
     </div>"""
 
 
 STYLE = """
-:root{--bg:#f4f5f9;--surface:#fff;--border:#e2e4ef;--text:#18182a;--muted:#6b7280;--shadow:0 1px 8px rgba(0,0,0,.06);--c-company:#3b82f6;--c-model:#8b5cf6;--c-policy:#f59e0b;--c-research:#10b981}
-@media(prefers-color-scheme:dark){:root{--bg:#0d0d1a;--surface:#16162a;--border:#252540;--text:#e8e8f4;--muted:#8b8ba8;--shadow:0 1px 8px rgba(0,0,0,.35)}}
+:root{--bg:#0e0e18;--surface:#16162a;--surface2:#1e1e38;--border:#2a2a45;--text:#e8e8f4;--muted:#8b8ba8;--shadow:0 4px 24px rgba(0,0,0,.4);--c-company:#60a5fa;--c-model:#a78bfa;--c-policy:#fbbf24;--c-research:#34d399}
+@media(prefers-color-scheme:light){:root{--bg:#f0f2f8;--surface:#fff;--surface2:#f8f9fc;--border:#dde0ee;--text:#18182a;--muted:#6b7280;--shadow:0 2px 16px rgba(0,0,0,.08);--c-company:#2563eb;--c-model:#7c3aed;--c-policy:#d97706;--c-research:#059669}}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.6;padding:1.25rem 1rem}
-.container{max-width:740px;margin:0 auto}
-header{display:flex;align-items:baseline;gap:.75rem;margin-bottom:1.25rem}
-header h1{font-size:1.25rem;font-weight:800;letter-spacing:-.02em}
-header .date{color:var(--muted);font-size:.82rem}
-.top3{background:linear-gradient(135deg,#4f46e5,#7c3aed);border-radius:14px;padding:1.25rem 1.4rem;margin-bottom:1.75rem;color:#fff}
-.top3-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.75;margin-bottom:.9rem}
-.top3-item{display:flex;align-items:flex-start;gap:.75rem;margin-bottom:.65rem}
-.top3-item:last-child{margin-bottom:0}
-.top3-num{flex-shrink:0;width:1.4rem;height:1.4rem;border-radius:50%;background:rgba(255,255,255,.2);font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:.1rem}
-.top3-text{font-size:.92rem;line-height:1.45}
-.section{display:flex;align-items:center;gap:.5rem;margin:1.75rem 0 .75rem;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.section-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px;line-height:1.55;min-height:100vh}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.5rem;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:10}
+.topbar-left{display:flex;align-items:center;gap:.6rem}
+.topbar h1{font-size:1rem;font-weight:800;letter-spacing:-.02em}
+.topbar .date{font-size:.75rem;color:var(--muted)}
+.topbar .count{font-size:.7rem;font-weight:700;padding:.2rem .55rem;border-radius:20px;background:var(--surface2);border:1px solid var(--border);color:var(--muted)}
+.top3-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;padding:1rem 1.5rem;background:linear-gradient(135deg,#1a0a4a 0%,#0a1a3a 100%);border-bottom:1px solid var(--border)}
+.top3-item{display:flex;gap:.6rem;align-items:flex-start}
+.top3-num{flex-shrink:0;width:1.4rem;height:1.4rem;border-radius:50%;background:rgba(255,255,255,.15);font-size:.68rem;font-weight:800;display:flex;align-items:center;justify-content:center;color:#fff;margin-top:.1rem}
+.top3-text{font-size:.82rem;line-height:1.4;color:#e0e0f8}
+.top3-label{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:.55rem;grid-column:1/-1}
+.main{padding:1.25rem 1.5rem}
+.section{display:flex;align-items:center;gap:.5rem;margin:1.5rem 0 .8rem;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.section-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .section-line{flex:1;height:1px;background:var(--border)}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;border-left:4px solid var(--cat-color,#6366f1);padding:.95rem 1.1rem;margin-bottom:.65rem;box-shadow:var(--shadow)}
-.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem;margin-bottom:.35rem}
-.card-title{font-weight:650;font-size:.95rem;line-height:1.4;flex:1}
-.cat-tag{flex-shrink:0;font-size:.67rem;font-weight:700;padding:.15rem .5rem;border-radius:20px;background:color-mix(in srgb,var(--cat-color,#6366f1) 12%,transparent);color:var(--cat-color,#6366f1);margin-top:.1rem;white-space:nowrap}
-.card-summary{font-size:.86rem;color:var(--muted);line-height:1.5;margin-bottom:.55rem}
-details summary{font-size:.8rem;color:var(--cat-color,#6366f1);cursor:pointer;user-select:none;list-style:none;opacity:.85}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.75rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.35)}
+.card-img{width:100%;height:140px;object-fit:cover;display:block;background:var(--surface2);border-bottom:1px solid var(--border)}
+.card-img-placeholder{width:100%;height:140px;background:linear-gradient(135deg,var(--surface2) 0%,var(--border) 100%);display:flex;align-items:center;justify-content:center;font-size:2rem;border-bottom:1px solid var(--border)}
+.company .card-img-placeholder{background:linear-gradient(135deg,#1e3a6e,#0f2040)}
+.model .card-img-placeholder{background:linear-gradient(135deg,#2d1b5e,#1a0f3a)}
+.policy .card-img-placeholder{background:linear-gradient(135deg,#4a2e00,#2a1a00)}
+.research .card-img-placeholder{background:linear-gradient(135deg,#0a3028,#051a14)}
+.card-body{padding:.85rem 1rem;flex:1;display:flex;flex-direction:column}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:.4rem;margin-bottom:.4rem}
+.card-title{font-weight:700;font-size:.88rem;line-height:1.35;flex:1}
+.cat-tag{flex-shrink:0;font-size:.6rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;background:color-mix(in srgb,var(--cat-color,#6366f1) 15%,transparent);color:var(--cat-color,#6366f1);margin-top:.05rem;white-space:nowrap;border:1px solid color-mix(in srgb,var(--cat-color,#6366f1) 25%,transparent)}
+.card-summary{font-size:.82rem;color:var(--muted);line-height:1.5;margin-bottom:.6rem;flex:1}
+.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:.6rem;border-top:1px solid var(--border)}
+details summary{font-size:.75rem;color:var(--cat-color,#818cf8);cursor:pointer;user-select:none;list-style:none;opacity:.85}
 details summary::-webkit-details-marker{display:none}
-details summary::before{content:"▸ ";font-size:.65rem}
+details summary::before{content:"▸ ";font-size:.6rem}
 details[open] summary::before{content:"▾ "}
-.detail-body{margin-top:.65rem;padding-top:.65rem;border-top:1px solid var(--border);font-size:.86rem;line-height:1.65}
-.source-link{display:inline-block;margin-top:.45rem;font-size:.78rem;color:var(--cat-color,#6366f1);text-decoration:none;opacity:.8}
+.detail-body{margin-top:.6rem;padding-top:.6rem;border-top:1px solid var(--border);font-size:.81rem;line-height:1.6}
+.source-link{font-size:.72rem;color:var(--cat-color,#818cf8);text-decoration:none;opacity:.75}
 .source-link:hover{opacity:1;text-decoration:underline}
-.related{margin-top:.55rem;display:flex;flex-wrap:wrap;gap:.3rem}
-.related a,.related span{font-size:.73rem;color:var(--muted);background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.1rem .45rem;text-decoration:none}
-.related a:hover{color:var(--text)}
+.related{display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.5rem}
+.related a,.related span{font-size:.67rem;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:.08rem .4rem;text-decoration:none}
 .company{--cat-color:var(--c-company)}.model{--cat-color:var(--c-model)}.policy{--cat-color:var(--c-policy)}.research{--cat-color:var(--c-research)}
-footer{margin-top:2.5rem;text-align:center;font-size:.74rem;color:var(--muted);opacity:.6}
+footer{text-align:center;padding:2rem;font-size:.7rem;color:var(--muted);opacity:.5;border-top:1px solid var(--border)}
+@media(max-width:700px){.top3-bar{grid-template-columns:1fr}.main{padding:1rem}.cards{grid-template-columns:1fr}}
 """
 
 
@@ -251,7 +284,7 @@ def generate_html(articles: list[dict], index: list) -> str:
             f'<div class="section-line"></div></div>'
         )
         cards = "".join(make_card(a, cat, make_related_html(a["related"])) for a in cat_articles)
-        sections_html += section_header + cards
+        sections_html += section_header + f'<div class="cards">{cards}</div>'
 
     total = sum(len(v) for v in by_cat.values())
     date_str = datetime.now().strftime('%Y년 %m월 %d일 (%a)').replace(
@@ -267,18 +300,21 @@ def generate_html(articles: list[dict], index: list) -> str:
   <style>{STYLE}</style>
 </head>
 <body>
-<div class="container">
-  <header>
+<div class="topbar">
+  <div class="topbar-left">
     <h1>🤖 AI 동향 브리핑</h1>
-    <span class="date">{date_str} &middot; 뉴스 {total}건</span>
-  </header>
-  <div class="top3">
-    <div class="top3-label">🔥 오늘의 핵심</div>
-    {top3_items}
+    <span class="date">{date_str}</span>
   </div>
-  {sections_html}
-  <footer>AI 동향 브리핑 · {TODAY} · scripts/collect.py 자동 생성</footer>
+  <span class="count">뉴스 {total}건</span>
 </div>
+<div class="top3-bar">
+  <div class="top3-label">🔥 오늘의 핵심</div>
+  {top3_items}
+</div>
+<div class="main">
+  {sections_html}
+</div>
+<footer>AI 동향 브리핑 · {TODAY} · scripts/collect.py 자동 생성</footer>
 </body>
 </html>"""
 
