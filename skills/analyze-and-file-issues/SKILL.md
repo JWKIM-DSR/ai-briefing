@@ -37,8 +37,14 @@ $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";
 순서대로 확인:
 1. `gh auth status` — 로그인 안 된 경우 `gh auth login` 안내 후 중단
 2. gh CLI 없는 경우 `winget install GitHub.cli` 안내 후 중단
-3. `git remote -v` — 레포 URL 확인. 레포 없으면 사용자에게 URL 요청
-4. `gh issue list --repo <OWNER/REPO> --state open` — 기존 이슈 목록 확인 (중복 방지)
+3. `git remote -v`로 레포 URL 확인 후 아래 방식으로 OWNER/REPO 추출:
+   ```powershell
+   $repo = (git remote get-url origin) -replace '.*github\.com[:/](.+?)(?:\.git)?$', '$1'
+   # 결과 예시: JWKIM-DSR/ai-briefing
+   ```
+   레포 없으면 사용자에게 URL 직접 입력 요청
+4. `gh issue list --repo $repo --state all` — open + closed 이슈 모두 확인 (중복 방지)
+   - 제목이 유사한 closed 이슈가 있으면 "(이미 해결된 이슈 #번호와 유사)" 라고 표시 후 계속 진행
 
 ### 2단계: 이슈 도출
 
@@ -73,11 +79,17 @@ $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";
 이슈 본문은 반드시 **Write 도구로 임시 파일에 저장** 후 `--body-file`로 등록한다.
 `--body`에 직접 긴 텍스트를 넣으면 대괄호·특수문자·줄바꿈에서 파싱 오류가 발생한다.
 
-```
-임시 파일 경로: C:\Users\<USERNAME>\AppData\Local\Temp\gh_issue_<번호>.txt
+```powershell
+# 임시 파일 경로 — $env:TEMP 사용 (사용자 이름에 무관하게 자동으로 올바른 경로 지정)
+$tmpFile = "$env:TEMP\gh_issue_1.txt"
+$commentFile = "$env:TEMP\gh_comment_1.txt"
 ```
 
 등록 순서: 버그 먼저, 개선점 나중에 (심각도 높은 것부터).
+
+등록 실패 시 처리:
+- 개별 이슈 등록 실패해도 전체를 멈추지 않고 다음 이슈 계속 진행
+- 실패한 이슈는 별도로 기록해두고, 5단계 결과 보고에서 "등록 실패" 목록으로 표시
 
 ### 4단계: 초보자용 설명 댓글 자동 추가
 
@@ -110,6 +122,12 @@ $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";
 ```
 
 버그가 있으면 "지금 바로 수정할까요?" 라고 물어본다.
+
+결과 보고 후 임시 파일 정리:
+```powershell
+Remove-Item "$env:TEMP\gh_issue_*.txt" -ErrorAction SilentlyContinue
+Remove-Item "$env:TEMP\gh_comment_*.txt" -ErrorAction SilentlyContinue
+```
 
 ---
 
