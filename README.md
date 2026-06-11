@@ -47,8 +47,12 @@ AI동향/
 ├── CLAUDE.md                          # Claude 운영 지침
 ├── README.md                          # 이 파일
 ├── SOUL.md                            # 설계 철학
+├── .gitignore
 ├── index.json                         # 뉴스 키워드 인덱스 (영구 보관)
-├── 브리핑_YYYY-MM-DD.html             # 생성된 브리핑 (최근 2주)
+├── 브리핑_YYYY-MM-DD.html             # 생성된 브리핑 (최근 2주, git 제외)
+├── scripts/
+│   ├── collect.py                     # RSS 기반 독립 수집 스크립트
+│   └── requirements.txt
 └── skills/
     ├── morning-ai-digest-skill.md     # 브리핑 생성 스킬 (디자인 규칙 포함)
     ├── analyze-and-file-issues/
