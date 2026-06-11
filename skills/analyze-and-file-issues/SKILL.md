@@ -43,7 +43,7 @@ $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";
    # 결과 예시: JWKIM-DSR/ai-briefing
    ```
    레포 없으면 사용자에게 URL 직접 입력 요청
-4. `gh issue list --repo $repo --state all` — open + closed 이슈 모두 확인 (중복 방지)
+4. `gh issue list --repo $repo --state all --limit 200` — open + closed 이슈 모두 확인 (중복 방지)
    - 제목이 유사한 closed 이슈가 있으면 "(이미 해결된 이슈 #번호와 유사)" 라고 표시 후 계속 진행
 
 ### 2단계: 이슈 도출
@@ -92,6 +92,14 @@ $commentFile = "$env:TEMP\gh_comment_1.txt"
 - 실패한 이슈는 별도로 기록해두고, 5단계 결과 보고에서 "등록 실패" 목록으로 표시
 
 ### 4단계: 초보자용 설명 댓글 자동 추가
+
+이슈 등록이 성공한 경우(gh 명령어가 URL을 반환한 경우)에만 해당 이슈에 댓글을 단다.
+등록 실패한 이슈는 건너뛴다.
+
+```powershell
+$url = gh issue create --repo $repo --title $title --label $label --body-file $tmpFile
+if ($url) { gh issue comment ($url -split '/')[-1] --repo $repo --body-file $commentFile }
+```
 
 각 이슈 등록 직후 `gh issue comment`로 댓글을 단다.
 댓글은 개발을 처음 접하는 사람도 이해할 수 있게 작성한다:

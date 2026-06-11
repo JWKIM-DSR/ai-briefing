@@ -1,0 +1,15 @@
+# 생성된 브리핑 파일 (2주 보관 후 자동 삭제, 버전 관리 불필요)
+브리핑_*.html
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+
+# 임시 파일
+*.tmp
+gh_issue_*.txt
+gh_comment_*.txt

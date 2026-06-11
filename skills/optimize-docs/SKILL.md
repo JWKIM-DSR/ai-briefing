@@ -73,7 +73,8 @@ description: |
 
 ```powershell
 git add CLAUDE.md README.md SOUL.md
-# 스킬 파일도 수정됐으면 함께 add
+git add skills/   # 스킬 파일 수정 시 반드시 포함
+git status        # add 누락 없는지 확인 후 커밋
 git commit -m "docs: remove duplicate facts, one fact one file
 
 변경 내용 요약 (예시):
