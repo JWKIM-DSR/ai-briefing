@@ -36,6 +36,8 @@
 | 브리핑 수동 실행 | `브리핑 만들어줘` |
 | 자동 실행 | 데스크탑 앱 스케줄드 태스크 → 매일 오전 7시 |
 | GitHub 이슈 등록 | `이슈 등록해줘` / `re-issue` |
+| 이슈 해결 | `이슈 #N 해결해줘` / `resolve #N` |
+| 전체 개선 사이클 | `한 번에 다 돌려줘` / `풀 사이클` |
 | 문서 중복 제거 | `문서 최적화` |
 
 ---
@@ -55,8 +57,11 @@ AI동향/
 │   └── requirements.txt
 └── skills/
     ├── morning-ai-digest-skill.md     # 브리핑 생성 스킬 (디자인 규칙 포함)
-    ├── analyze-and-file-issues/
+    ├── audit-to-issue/
     │   └── SKILL.md                   # GitHub 이슈 등록 스킬
+    ├── issues-plan-and-resolve/
+    │   └── SKILL.md                   # 이슈 해결 스킬
+    ├── briefingimprover.md            # 풀 사이클 개선 스킬
     └── optimize-docs/
         └── SKILL.md                   # 문서 중복 제거 스킬
 ```

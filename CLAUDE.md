@@ -22,8 +22,10 @@ Claude Code 운영 지침. 철학은 SOUL.md, 사람용 안내는 README.md.
 | 스킬 | 파일 | 하는 일 |
 |------|------|---------|
 | `morning-ai-digest` | `skills/morning-ai-digest-skill.md` | AI 뉴스 수집 → HTML 생성 → 인덱스 업데이트 → 브라우저 실행 |
-| `analyze-and-file-issues` | `skills/analyze-and-file-issues/SKILL.md` | 버그·개선점 분석 → GitHub 이슈 등록 |
+| `audit-to-issue` | `skills/audit-to-issue/SKILL.md` | 버그·개선점 분석 → GitHub 이슈 등록 + 댓글 |
+| `issues-plan-and-resolve` | `skills/issues-plan-and-resolve/SKILL.md` | 이슈 번호 지정 → 수정 계획 승인 → 코드 수정 → close |
 | `optimize-docs` | `skills/optimize-docs/SKILL.md` | 문서 중복 제거 → 하드코딩 점검 → git commit |
+| `briefingimprover` | `skills/briefingimprover.md` | audit-to-issue → issues-plan-and-resolve → optimize-docs 풀 사이클 |
 
 ## 규칙
 
