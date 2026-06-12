@@ -172,6 +172,14 @@ index.json은 삭제하지 않고 계속 누적합니다 (가벼운 파일이므
 파일명에서 날짜를 파싱해서 정확히 일치하는 형식만 대상으로 합니다 (예: `브리핑_목차.html` 같은 파일은 제외).
 삭제 전 파일명을 출력해서 어떤 파일이 삭제됐는지 알려줍니다.
 
+**③ GitHub 자동 백업**
+```powershell
+git -C "C:\Users\Admin\Desktop\AI동향" add "브리핑_*.html" "index.json"
+git -C "C:\Users\Admin\Desktop\AI동향" commit -m "briefing: YYYY-MM-DD 브리핑 추가"
+git -C "C:\Users\Admin\Desktop\AI동향" push origin master
+```
+push 실패 시(오프라인 등) "⚠️ GitHub 업로드 실패 — 나중에 수동으로 push해주세요" 출력 후 계속 진행.
+
 ### 6단계: 브라우저 실행
 생성된 HTML 파일을 기본 브라우저로 자동으로 여세요.
 PowerShell과 Bash 양쪽에서 동작하도록 아래 방식을 사용합니다.

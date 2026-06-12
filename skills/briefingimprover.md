@@ -100,6 +100,25 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 
 ---
 
+## 사전 점검 (실행 전 자동 수행)
+
+아래 두 파일 내용이 일치하는지 확인한다:
+- `C:\Users\Admin\Desktop\AI동향\skills\morning-ai-digest-skill.md`
+- `C:\Users\Admin\.claude\scheduled-tasks\morning-ai-digest\SKILL.md`
+
+불일치 발견 시 "⚠️ 스킬 파일 불일치 감지 — skills/ 기준으로 스케줄드 태스크 파일을 동기화합니다" 출력 후 스케줄드 태스크 파일을 skills/ 파일로 덮어쓴다.
+
+---
+
+## 알려진 오류 패턴
+
+| 증상 | 원인 | 조치 |
+|------|------|------|
+| 오늘 브리핑이 오전 7시에 발행 안 됨 | 스케줄 cron이 UTC 기준으로 저장돼 한국 시간과 불일치 | `mcp__scheduled-tasks__update_scheduled_task`로 cronExpression 재설정 (로컬 시간 기준 `0 7 * * *`) |
+| 스킬 수정 후 스케줄드 태스크에 미반영 | `skills/`와 `scheduled-tasks/` 이중 관리 구조 | 사전 점검 단계에서 자동 동기화됨 |
+
+---
+
 ## 중단 조건
 
 - 1단계 `gh auth` 실패 → 전체 중단

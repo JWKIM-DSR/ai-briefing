@@ -2,18 +2,45 @@
   {
     "date": "2026-06-11",
     "items": [
-      { "title": "Anthropic, OpenAI 기업 시장 점유율 첫 역전 — IPO S-1 비공개 제출", "keywords": ["Anthropic", "OpenAI", "IPO", "Claude Code", "S-1"] },
-      { "title": "Microsoft, 자체 AI 모델 7종 MAI 공개 — MAI-Thinking-1 포함", "keywords": ["Microsoft", "MAI", "MAI-Thinking-1"] },
-      { "title": "OpenAI, Oracle 클라우드 통해 GPT 모델·Codex 접근 허용", "keywords": ["OpenAI", "Oracle", "Codex", "GPT"] },
-      { "title": "Meta, 첫 자체 플래그십 LLM Muse Spark 공개", "keywords": ["Meta", "Muse Spark", "LLM", "Alexandr Wang"] },
-      { "title": "Apple WWDC 2026: Siri에 Google Gemini 탑재 확정", "keywords": ["Apple", "Siri", "Gemini", "WWDC"] },
-      { "title": "Google Gemini 3.1 Flash-Lite 출시 — 2.5배 빠른 응답", "keywords": ["Google", "Gemini", "Flash-Lite"] },
-      { "title": "OpenAI GPT-5.5 시리즈 공개 — Pro·Instant 변형 모델", "keywords": ["OpenAI", "GPT-5.5"] },
-      { "title": "EU AI법 집행 전담 기구 발족 — 고위험 AI 규제 최대 16개월 유예", "keywords": ["EU", "AI법", "규제"] },
-      { "title": "SKT, 울산 하이퍼스케일 AI 데이터센터 구축 — B200 GPUaaS 서비스", "keywords": ["SKT", "SK텔레콤", "데이터센터", "B200", "GPUaaS"] },
-      { "title": "삼성전자 시총 2천조 돌파 — 젠슨 황 방한 기대감", "keywords": ["삼성전자", "젠슨황", "엔비디아", "반도체"] },
-      { "title": "Google TurboQuant 알고리즘 — KV 캐시 메모리 오버헤드 감소", "keywords": ["Google", "TurboQuant", "ICLR", "KV캐시"] },
-      { "title": "CVPR 2026 최우수: O-Voxel 3D 생성 모델", "keywords": ["CVPR", "O-Voxel", "칭화대", "Microsoft Research"] }
+      { "title": "Anthropic, Claude Fable 5 공개 — 역대 최강 모델 일반 출시", "keywords": ["Anthropic", "Fable5", "Claude", "Mythos"] },
+      { "title": "Anthropic, 기업 AI 점유율 OpenAI 역전 + IPO S-1 제출", "keywords": ["Anthropic", "OpenAI", "IPO", "S-1", "Glasswing"] },
+      { "title": "OpenAI, Oracle 클라우드 통합 + 연매출 $250억 돌파", "keywords": ["OpenAI", "Oracle", "Codex", "GPT"] },
+      { "title": "Meta, 첫 자체 플래그십 LLM Muse Spark 공개", "keywords": ["Meta", "MuseSpark", "LLM", "AlexandrWang"] },
+      { "title": "Anthropic Project Glasswing — Claude Mythos Preview 선별 공개", "keywords": ["Anthropic", "Mythos", "AWS", "Apple", "Google", "JPMorgan", "Microsoft"] },
+      { "title": "Google, Gemini 3.1 Flash-Lite 출시 — 2.5배 빠른 응답", "keywords": ["Google", "Gemini", "FlashLite"] },
+      { "title": "Apple WWDC 2026 — Siri에 Google Gemini 탑재 공식화", "keywords": ["Apple", "Siri", "Gemini", "WWDC"] },
+      { "title": "미 백악관, AI 혁신·보안 행정명령 발령 (6/2)", "keywords": ["백악관", "행정명령", "AI규제", "사이버보안"] },
+      { "title": "미 의회 초당파 AI 프레임워크 법안 발의 (6/4)", "keywords": ["미의회", "AI법안", "의무감사", "근로자보호"] },
+      { "title": "EU, AI 생성 콘텐츠 라벨링 규범 발표 + AI법 8월 시행", "keywords": ["EU", "AI법", "라벨링", "규제"] },
+      { "title": "SpaceX, Nasdaq IPO 예정 (6/12) — 사상 최대 규모 $75B", "keywords": ["SpaceX", "IPO", "Nasdaq", "SPCX"] },
+      { "title": "Boston Dynamics + Google DeepMind, Spot에 Gemini Robotics-ER 1.6 탑재", "keywords": ["BostonDynamics", "DeepMind", "Gemini", "로봇", "Spot"] },
+      { "title": "에이전틱 AI의 부상 — 채팅에서 업무 완수로 패러다임 전환", "keywords": ["에이전틱AI", "자동화", "패러다임"] },
+      { "title": "삼성전자, 전 관계사 'AI 대전환' 선언 (6/9)", "keywords": ["삼성전자", "AI대전환", "OpenAI"] },
+      { "title": "네이버, 엔비디아와 AI 팩토리 협업 — 2030년까지 1GW 인프라 목표", "keywords": ["네이버", "엔비디아", "AI팩토리", "에이전트N"] },
+      { "title": "SKT, 울산 하이퍼스케일 AI 데이터센터 + GPUaaS '해인' 운영", "keywords": ["SKT", "SK텔레콤", "데이터센터", "B200", "GPUaaS", "해인"] },
+      { "title": "슈퍼브AI, 중기부 '초격차 스타트업' AI 인프라 부문 선정", "keywords": ["슈퍼브AI", "초격차스타트업", "중기부"] }
+    ]
+  },
+  {
+    "date": "2026-06-12",
+    "items": [
+      { "title": "SpaceX, 오늘 Nasdaq 상장 시작 — 사상 최대 IPO $750억, 기업가치 $1.77조", "keywords": ["SpaceX", "IPO", "Nasdaq", "SPCX"] },
+      { "title": "Anthropic, IPO S-1 제출 — 기업가치 $9,650억, OpenAI 역전 확인", "keywords": ["Anthropic", "IPO", "S-1"] },
+      { "title": "OpenAI, IPO S-1 비공개 제출 — $8,520억 기업가치, 9월 상장 목표", "keywords": ["OpenAI", "IPO", "Oracle", "GPT-5.5"] },
+      { "title": "Meta, Muse Spark 공개 + 텍사스 데이터센터 $100억으로 확대", "keywords": ["Meta", "MuseSpark", "AlexandrWang"] },
+      { "title": "OpenAI, GPT-5.5 Pro·Instant 출시 — 확장 메모리·리뷰 페이지 신설", "keywords": ["OpenAI", "GPT-5.5", "메모리"] },
+      { "title": "Microsoft, MAI-Thinking-1 포함 자체 AI 모델 7종 발표", "keywords": ["Microsoft", "MAI-Thinking-1"] },
+      { "title": "Google, Gemini 3.5 Pro 이달 출시 예고 — 심층 추론·긴 컨텍스트", "keywords": ["Google", "Gemini3.5", "Pro"] },
+      { "title": "Anthropic Project Glasswing — Claude Mythos Preview 취약점 탐색 개시", "keywords": ["Anthropic", "Glasswing", "Mythos", "Claude"] },
+      { "title": "콜로라도 AI법 6월 30일 발효 — 미국 주 최초 포괄적 AI 거버넌스", "keywords": ["콜로라도", "AI법", "규제"] },
+      { "title": "EU, AI 생성 콘텐츠 라벨링 규범 발표 — 8월부터 투명성 의무화", "keywords": ["EU", "AI법", "라벨링"] },
+      { "title": "삼성전자, ChatGPT·Gemini Enterprise·Claude 사내 전면 허용", "keywords": ["삼성전자", "ChatGPT", "Claude", "AI전환"] },
+      { "title": "샘 올트먼 방한 — 삼성·네이버·카카오와 연쇄 AI 협력 논의", "keywords": ["OpenAI", "올트먼", "삼성전자", "네이버", "카카오"] },
+      { "title": "SKT, MWC 2026 풀스택 AI 공개 — 울산 하이퍼스케일 AIDC 구축", "keywords": ["SKT", "풀스택AI", "AIDC", "울산"] },
+      { "title": "슈퍼브AI 초격차 선정 + CB인사이트 세계 100대 AI 기업에 한국 4개사", "keywords": ["슈퍼브AI", "초격차스타트업", "CB인사이트"] },
+      { "title": "한국 제안 AI·6G 보안 표준 14건 ITU-T 승인", "keywords": ["ITU-T", "AI보안", "6G", "과기부"] },
+      { "title": "Google TurboQuant (ICLR 2026) — KV 캐시 메모리 절감 알고리즘", "keywords": ["TurboQuant", "Google", "ICLR", "KV캐시"] },
+      { "title": "청화대·Microsoft Research, O-Voxel로 3D 생성 모델링 혁신", "keywords": ["청화대", "Microsoft", "O-Voxel", "3D생성"] }
     ]
   }
 ]
