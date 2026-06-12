@@ -106,7 +106,12 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 - `C:\Users\Admin\Desktop\AI동향\skills\morning-ai-digest-skill.md`
 - `C:\Users\Admin\.claude\scheduled-tasks\morning-ai-digest\SKILL.md`
 
-불일치 발견 시 "⚠️ 스킬 파일 불일치 감지 — skills/ 기준으로 스케줄드 태스크 파일을 동기화합니다" 출력 후 스케줄드 태스크 파일을 skills/ 파일로 덮어쓴다.
+불일치 발견 시 아래 메시지를 출력하고 자동 복사 없이 종료한다 (자동 복사는 Claude Code 권한 차단됨):
+
+```
+⚠️ 스킬 파일 불일치 감지 — 아래 명령어를 터미널에서 직접 실행해 동기화하세요:
+Copy-Item 'C:\Users\Admin\Desktop\AI동향\skills\morning-ai-digest-skill.md' 'C:\Users\Admin\.claude\scheduled-tasks\morning-ai-digest\SKILL.md' -Force
+```
 
 ---
 

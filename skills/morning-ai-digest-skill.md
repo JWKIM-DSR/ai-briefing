@@ -110,11 +110,17 @@ body { background: #050505; color: #fff; margin: 0; }
 - `lbl`: Space Mono, 11px, letter-spacing .14em, color #555 — `"ARTIFICIAL INTELLIGENCE" / DAILY BRIEFING`
 - `ttl`: Josefin Sans 700, 44px, letter-spacing -.02em — `"AI" DIGEST` (DIGEST는 opacity .3)
 - `meta`: Space Mono, 12px, color #555, 우측 정렬 — 날짜·시간 KST·VOL.N
+  - VOL.N 계산: `index.json` 날짜 항목 수 + 1 (index.json 없거나 비어 있으면 VOL.1)
 - 하단 사선 스트라이프: `height: 2px; background: repeating-linear-gradient(90deg,#fff 0 6px,transparent 6px 12px); opacity: .07`
 
 **통계 스트립** (헤더 바로 아래):
 - 4컬럼 그리드 / `gap: 1px; background: #1a1a1a`
-- 각 셀: `background: #050505`, 숫자 26px 700 white, 라벨 Space Mono 11px #444 — `"STORIES"` 형식
+- 각 셀: `background: #050505`, 숫자 26px 700 white, 라벨 Space Mono 11px #444
+- 컬럼 구성 (수집 결과에서 자동 산출):
+  1. `"STORIES"` — 총 기사 수
+  2. `"DOMESTIC"` — 국내 기사 수
+  3. `"CATEGORIES"` — 카테고리 수
+  4. `"TOTAL ISSUES"` — 누적 발행 횟수 (VOL.N과 동일 값)
 
 **핵심 3줄 박스**:
 - `background: #050505; border: 1px solid #333`, border-radius 0
@@ -126,6 +132,19 @@ body { background: #050505; color: #fff; margin: 0; }
 - `border: 1px solid #333`, border-radius 0, color #555, background transparent
 - active/hover: `background: #fff; color: #000; border-color: #fff`
 - 카테고리명 따옴표 포함: `"ALL"` `"기업소식"` `"모델·기술"` `"정책·산업"` `"연구·논문"`
+- 각 카드에 `data-category="기업소식"` 속성 부여, 필터 JS:
+  ```javascript
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.category
+      document.querySelectorAll('.card').forEach(card => {
+        card.style.display = (cat === 'all' || card.dataset.category === cat) ? '' : 'none'
+      })
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'))
+      btn.classList.add('active')
+    })
+  })
+  ```
 
 **카드 그리드**:
 - `display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; background: #1a1a1a`
@@ -136,6 +155,11 @@ body { background: #050505; color: #fff; margin: 0; }
 - 이미지 없을 때 폴백: `background: #111; height: 160px; display: flex; align-items: center; justify-content: center`
 - 폴백 텍스트: Space Mono, 11px, #333, 카테고리명 표시
 - 이미지 수집 방법: 원문 URL에서 `<meta property="og:image">` 태그 파싱 또는 WebFetch로 첫 번째 이미지 URL 추출
+- 이미지 로드 실패 처리: `<img>` 태그에 반드시 `onerror` 핸들러를 추가해 폴백 div로 교체:
+  ```html
+  <img src="URL" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" ...>
+  <div class="card-img" style="display:none">"카테고리명"</div>
+  ```
 
 **카드 내부** (이미지 아래):
 - padding: 1.4rem
