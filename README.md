@@ -51,7 +51,7 @@ AI동향/
 ├── SOUL.md                            # 설계 철학
 ├── .gitignore
 ├── index.json                         # 뉴스 키워드 인덱스 (영구 보관)
-├── 브리핑_YYYY-MM-DD.html             # 생성된 브리핑 (최근 2주, git 제외)
+├── 브리핑_YYYY-MM-DD.html             # 생성된 브리핑 (로컬 2주 보관, GitHub 아카이브)
 ├── scripts/
 │   ├── collect.py                     # RSS 기반 독립 수집 스크립트
 │   └── requirements.txt

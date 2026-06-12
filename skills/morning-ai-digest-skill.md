@@ -174,7 +174,7 @@ index.json은 삭제하지 않고 계속 누적합니다 (가벼운 파일이므
 
 **③ GitHub 자동 백업**
 ```powershell
-git -C "C:\Users\Admin\Desktop\AI동향" add "브리핑_*.html" "index.json"
+git -C "C:\Users\Admin\Desktop\AI동향" add -f "브리핑_*.html" "index.json"
 git -C "C:\Users\Admin\Desktop\AI동향" commit -m "briefing: YYYY-MM-DD 브리핑 추가"
 git -C "C:\Users\Admin\Desktop\AI동향" push origin master
 ```
