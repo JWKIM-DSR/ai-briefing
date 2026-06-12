@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI 동향 브리핑 — 2026.06.12</title>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #050505; color: #fff; font-family: 'Josefin Sans', sans-serif; padding: 1.5rem 1rem 4rem; min-height: 100vh; }
+    :root { --bg:#050505; --surface:#0f0f0f; --border:#1a1a1a; --text:#fff; --muted:#555; --sub:#999; }
+    .container { max-width: 800px; margin: 0 auto; }
+
+    /* HEADER */
+    header { margin-bottom: 2rem; }
+    .header-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: .5rem; margin-bottom: .75rem; }
+    .header-lbl { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: .14em; color: #555; line-height: 1.6; }
+    .header-ttl { font-family: 'Josefin Sans', sans-serif; font-size: 44px; font-weight: 700; letter-spacing: -.02em; line-height: 1; margin: .4rem 0; }
+    .header-ttl span { opacity: .3; }
+    .header-meta { font-family: 'Space Mono', monospace; font-size: 12px; color: #555; text-align: right; white-space: nowrap; }
+    .header-stripe { height: 2px; background: repeating-linear-gradient(90deg,#fff 0 6px,transparent 6px 12px); opacity: .07; margin-top: .75rem; }
+
+    /* STATS */
+    .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: #1a1a1a; margin-bottom: 1.5rem; }
+    .stat { background: #050505; padding: .8rem 1rem; }
+    .stat-num { font-family: 'Josefin Sans', sans-serif; font-size: 26px; font-weight: 700; color: #fff; }
+    .stat-lbl { font-family: 'Space Mono', monospace; font-size: 11px; color: #444; margin-top: .2rem; }
+
+    /* KEY POINTS */
+    .key-points { background: #050505; border: 1px solid #333; padding: 1.4rem; margin-bottom: 1.5rem; }
+    .key-points-label { font-family: 'Space Mono', monospace; font-size: 11px; color: #444; margin-bottom: 1rem; letter-spacing: .1em; }
+    .key-point { display: flex; gap: 1rem; padding: .55rem 0; border-bottom: 1px solid #111; }
+    .key-point:last-child { border-bottom: none; }
+    .key-num { font-family: 'Space Mono', monospace; color: #fff; font-size: 13px; white-space: nowrap; }
+    .key-text { font-family: 'Josefin Sans', sans-serif; font-size: 15px; font-weight: 600; color: #fff; line-height: 1.5; }
+
+    /* FILTERS */
+    .filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.5rem; }
+    .filter-btn { font-family: 'Space Mono', monospace; font-size: 11px; border: 1px solid #333; background: transparent; color: #555; padding: .4rem .8rem; cursor: pointer; letter-spacing: .06em; transition: all .15s; }
+    .filter-btn:hover, .filter-btn.active { background: #fff; color: #000; border-color: #fff; }
+
+    /* SECTION */
+    .section-title { font-family: 'Space Mono', monospace; font-size: 11px; color: #444; letter-spacing: .12em; padding: .6rem 0; margin-bottom: 1px; border-top: 1px solid #1a1a1a; margin-top: 1.2rem; }
+
+    /* GRID */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; background: #1a1a1a; }
+
+    /* CARD */
+    .card { background: #050505; display: flex; flex-direction: column; }
+    .card-img-fallback { width: 100%; height: 160px; background: #111; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-size: 11px; color: #333; }
+    .card-body { padding: 1.4rem; flex: 1; display: flex; flex-direction: column; gap: .45rem; }
+    .card-cat { font-family: 'Space Mono', monospace; font-size: 11px; color: #444; letter-spacing: .06em; }
+    .card-title { font-family: 'Josefin Sans', sans-serif; font-size: 17px; font-weight: 700; color: #fff; line-height: 1.45; }
+    .card-summary { font-family: 'Josefin Sans', sans-serif; font-size: 14px; color: #999; line-height: 1.7; }
+    .card-summary::before { content: "— "; color: #333; }
+    details summary { font-family: 'Space Mono', monospace; font-size: 11px; color: #444; cursor: pointer; outline: none; margin-top: .3rem; list-style: none; }
+    details summary::-webkit-details-marker { display: none; }
+    details summary:hover { color: #aaa; }
+    details[open] summary { color: #aaa; }
+    .card-detail { font-family: 'Josefin Sans', sans-serif; font-size: 14px; color: #666; line-height: 1.75; margin-top: .6rem; font-weight: 300; }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: .8rem; border-top: 1px solid #111; }
+    .card-source { font-family: 'Space Mono', monospace; font-size: 11px; color: #444; }
+    .card-link { font-family: 'Space Mono', monospace; font-size: 11px; color: #888; text-decoration: none; }
+    .card-link:hover { color: #fff; }
+    .card-related { display: flex; flex-wrap: wrap; gap: 4px; margin-top: .4rem; }
+    .related-tag { font-family: 'Space Mono', monospace; font-size: 10px; color: #444; border: 1px solid #222; padding: 3px 8px; text-decoration: none; }
+    .related-tag:hover { color: #888; border-color: #444; }
+
+    @media (max-width: 480px) {
+      .header-ttl { font-size: 32px; }
+      .stats { grid-template-columns: repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="header-top">
+      <div>
+        <div class="header-lbl">"ARTIFICIAL INTELLIGENCE" / DAILY BRIEFING</div>
+        <div class="header-ttl">"AI" <span>DIGEST</span></div>
+      </div>
+      <div class="header-meta">2026.06.12 / FRI<br>KST 07:00<br>VOL.2</div>
+    </div>
+    <div class="header-stripe"></div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num">17</div><div class="stat-lbl">"STORIES"</div></div>
+    <div class="stat"><div class="stat-num">5</div><div class="stat-lbl">"CATEGORIES"</div></div>
+    <div class="stat"><div class="stat-num">3</div><div class="stat-lbl">"IPO MOVES"</div></div>
+    <div class="stat"><div class="stat-num">5</div><div class="stat-lbl">"KR NEWS"</div></div>
+  </div>
+
+  <div class="key-points">
+    <div class="key-points-label">"TODAY'S KEY POINTS"</div>
+    <div class="key-point">
+      <span class="key-num">01.</span>
+      <span class="key-text">SpaceX, 오늘 Nasdaq 거래 시작 (SPCX) — 조달액 $750억, 사상 최대 IPO 기록 경신</span>
+    </div>
+    <div class="key-point">
+      <span class="key-num">02.</span>
+      <span class="key-text">Anthropic $9,650억 · OpenAI $8,520억 동시 S-1 제출 — AI 양대 산맥, 상장 레이스 본격 돌입</span>
+    </div>
+    <div class="key-point">
+      <span class="key-num">03.</span>
+      <span class="key-text">삼성전자, ChatGPT·Gemini·Claude 사내 전면 허용 — 'AI 전환' 전략 오늘부터 공식 가동</span>
+    </div>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterCards('all', this)">"ALL"</button>
+    <button class="filter-btn" onclick="filterCards('기업소식', this)">"기업소식"</button>
+    <button class="filter-btn" onclick="filterCards('모델·기술', this)">"모델·기술"</button>
+    <button class="filter-btn" onclick="filterCards('정책·산업', this)">"정책·산업"</button>
+    <button class="filter-btn" onclick="filterCards('국내', this)">"국내"</button>
+    <button class="filter-btn" onclick="filterCards('연구·논문', this)">"연구·논문"</button>
+  </div>
+
+  <!-- 기업소식 -->
+  <div class="section-title" data-sec="기업소식">"기업소식"</div>
+  <div class="grid" data-sec="기업소식">
+
+    <div class="card" data-cat="기업소식">
+      <div class="card-img-fallback">"기업소식"</div>
+      <div class="card-body">
+        <div class="card-cat">"기업소식"</div>
+        <div class="card-title">SpaceX, 오늘 Nasdaq 상장 시작 — 사상 최대 IPO $750억, 기업가치 $1.77조</div>
+        <div class="card-summary">6월 12일 SPCX 티커 거래 개시. 사우디 아람코 기록 2배 이상 초과, 머스크 주식 매도 없음</div>
+        <details>
+          <summary>▸ 상세 보기</summary>
+          <div class="card-detail">SpaceX가 6월 11일 주당 $135에 공모가를 확정하고 오늘 Nasdaq에서 SPCX 티커로 거래를 시작합니다. 조달액 약 $750억으로 사우디 아람코의 2019년 IPO($354억)를 두 배 이상 뛰어넘는 사상 최대 규모입니다. Goldman Sachs가 21개 은행 신디케이트를 주관하며, 공모 물량의 30%가 Robinhood·Fidelity·Charles Schwab을 통해 개인 투자자에게 배정됩니다. 일론 머스크는 단 한 주도 매도하지 않습니다.</div>
+        </details>
+        <div class="card-related">
+          <a class="related-tag" href="브리핑_2026-06-11.html">🔗 SpaceX IPO 예고 — 06-11</a>
+        </div>
+        <div class="card-footer">
+          <span class="card-source">Reuters / CNBC</span>
+          <a class="card-link" href="https://www.buildfastwithai.com/blogs/ai-news-today-june-11-2026" target="_blank">↗ 원문</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="기업소식">
+      <div class="card-img-fallback">"기업소식"</div>
+      <div class="card-body">
+        <div class="card-cat">"기업소식"</div>
+        <div class="card-title">Anthropic, IPO S-1 제출 — 기업가치 $9,650억, OpenAI 역전 확인</div>
+        <div class="card-summary">6월 1일 SEC 비공개 제출. 코딩 시장 42% 점유, Claude Code 연매출 $25억+ 돌파</div>
+        <details>
+          <summary>▸ 상세 보기</summary>
+          <div class="card-detail">Anthropic이 6월 1일 SEC에 IPO 초안 S-1을 비공개 제출했습니다. 최근 자금 조달에서 $9,650억 기업가치를 인정받아 OpenAI를 넘어섰습니다. 엔터프라이즈 시장에서 Claude의 코딩 성능과 고객 데이터 비훈련 정책이 기업 고객을 끌어모았고, 코딩/도구 시장의 42%를 점유하며 Claude Code 단일 서비스로 연환산 $25억 이상의 매출을 기록 중입니다.</div>
+        </details>
+        <div class="card-related">
+          <a class="related-tag" href="브리핑_2026-06-11.html">🔗 Anthropic OpenAI 역전 — 06-11</a>
+        </div>
+        <div class="card-footer">
+          <span class="card-source">Bloomberg / Axios</span>
+          <a class="card-link" href="https://www.useluminix.com/reports/company-overviews/what-do-we-know-about-the-anthropic-ipo/source/3" target="_blank">↗ 원문</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="기업소식">
+      <div class="card-img-fallback">"기업소식"</div>
+      <div class="card-body">
+        <div class="card-cat">"기업소식"</div>
+        <div class="card-title">OpenAI, IPO S-1 비공개 제출 — $8,520억 기업가치, 9월 상장 목표</div>
+        <div class="card-summary">연매출 $250억 돌파. Oracle과 엔터프라이즈 AI 통합 계약 체결로 수익 채널 다변화</div>
+        <details>
+          <summary>▸ 상세 보기</summary>
+          <div class="card-detail">OpenAI가 6월 8일 IPO 초안 S-1을 SEC에 비공개 제출했습니다. 사모 시장에서 기업가치 $8,520억을 인정받았으며 빠르면 2026년 9월 상장이 목표입니다. 연매출은 $250억을 넘어섰습니다. 6월 11일에는 Oracle Cloud Infrastructure 고객이 기존 Universal Credits로 GPT 및 Codex를 이용할 수 있도록 통합 계약을 체결했습니다.</div>
+        </details>
+        <div class="card-related">
+          <a class="related-tag" href="브리핑_2026-06-11.html">🔗 OpenAI Oracle 통합 — 06-11</a>
+        </div>
+        <div class="card-footer">
+          <span class="card-source">WSJ / TechCrunch</span>
+          <a class="card-link" href="https://llm-stats.com/ai-news" target="_blank">↗ 원문</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="기업소식">
+      <div class="card-img-fallback">"기업소식"</div>
+      <div class="card-body">
+        <div class="card-cat">"기업소식"</div>
+        <div class="card-title">Meta, Muse Spark 공개 + 텍사스 데이터센터 $15억 → $100억으로 7배 확대</div>
+        <div class="card-summary">Alexandr Wang 주도 슈퍼인텔리전스 랩 첫 플래그십 LLM. El Paso 시설 2028년 1GW 목표</div>
+        <details>
+          <summary>▸ 상세 보기</summary>
+          <div class="card-detail">Meta가 첫 번째 자체 플래그십 LLM인 Muse Spark를 공개했습니다. Chief AI Officer Alexandr Wang이 이끄는 Superintelligence Labs의 첫 작품으로, 멀티모달 인식·추론·헬스케어·에이전틱 작업에서 높은 성능을 보이면서도 컴퓨팅 비용은 경쟁 모델 대비 크게 낮습니다. 텍사스 El Paso 데이터센터 투자도 $15억에서 $100억 이상으로 확대해 2028년 1기가와트 용량을 목표로 합니다.</div>
+        </details>
+        <div class="card-related">
+          <a class="related-tag" href="브리핑_2026-06-11.html">🔗 Meta Muse Spark 첫 공개 — 06-11</a>
+        </div>
+        <div class="card-footer">
+          <span class="card-source">The Verge / Reuters</span>
+          <a class="card-link" href="https://www.crescendo.ai/news/latest-ai-news-and-updates" target="_blank">↗ 원문</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 모델·기술 -->
+  <div class="section-title" data-sec="모델·기술">"모델·기술"</div>
+  <div class="grid" data-sec="모델·기술">
+
+    <div class="card" data-cat="모델·기술">
+      <div class="card-img-fallback">"모델·기술"</div>
+      <div class="card-body">
+        <div class="card-cat">"모델·기술"</div>
+        <div class="card-title">OpenAI, GPT-5.5 Pro·Instant 출시 — 확장 메모리 + 리뷰 페이지 신설</div>
+        <div class="card-summary">Plus·Pro 사용자 우선 배포. 메모리 요약 페이지로 AI 기억 내용 투명하게 확인·수정 가능</div>
+        <details>
+          <summary>▸ 상세 보기</summary>
+          <div class="card-detail">OpenAI가 GPT-5.5와 GPT-5.5 Pro, GPT-5.5 Instant 변형 모델을 출시했습니다. 업그레이드된 ChatGPT 메모리 시스템을 함께 도입해 메모리 요약 페이지를 통해 사용자가 AI가 기억하는 내용을 직접 확인하고 수정할 수 있습니다. 미국 내 Plus·Pro 사용자부터 순차 배포되며 Free·Go 요금제는 추후 지원 예정입니다.</div>
+        </details>
+        <div class="card-footer">
+          <span class="card-source">OpenAI</span>
+          <a class="card-link" href="https://releasebot.io/updates/openai" target="_blank">↗ 원문</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="모델·기술">
+      <div class="card-img-fallback">"모델·기술"</div>
+      <div class="card-body">
+        <div class="card-cat">"모델·기술"</div>
+        <div class="card-title">Microsoft, MAI-Thinking-1 포함 자체 AI 모델 7종 발표 — OpenAI 의존 탈피</div>
+        <div class="card-summary">소프트웨어 엔지니어링·수학 추론 벤치마크 최상위권. 개발자 비용 절감 직결</div>
+        <details>
+          <summary>▸ 상세 보기</summary>
+          <div class="card-detail">Microsoft가 자사 AI 플래그십 추론 모델 MAI-Thinking-1을 포함해 총 7개의 자체 개발 모델을 발표했습니다. 핵심 소프트웨어 엔지니어링 벤치마크에서 선두권 성능을 기록했으며 수학적 추론 능력도 뛰어납니다. OpenAI에 대한 의존도를 줄이고 개발자에게 저비용 대안을 제공하는 것이 핵심 목표입니다.</div>
+        </details>
+        <div class="card-footer">
+          <span class="card-source">CNBC / Microsoft AI</span>
+          <a class="card-link" href="https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/" target="_blank">↗ 원문</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="모델·기술">
+      <div class="card-img-fallback">"모델·기술"</div>
+      <div class="card-body">
+        <div class="card-cat">"모델·기술"</div>
+        <div class="card-title">Google, Gemini 3.5 Pro 이달 출시 예고 — 심층 추론·긴 컨텍스트 강화</div>
+        <div class="card-summary">Google I/O서 "다음달" 공언. Flash는 이미 출시 중 — 55점 Intelligence Index, 284 토큰/초</div>
+        <details>
+          <summary>▸ 상세 보기</summary>
+          <div class="card-detail">Google이 5월 말 Google I/O에서 Gemini 3.5 Pro를 "다음달" 출시하겠다고 공식 예고해 6월 중 출시가 예상됩니다. 이미 출시된 Gemini 3.5 Flash는 Intelligence Index 55점, 초당 284 토큰 속도를 기록 중입니다. Pro 버전은 더 깊은 추론과 긴 컨텍스트 처리를 지원해 복잡한 엔터프라이즈·에이전틱 워크로드를 겨냥합니다.</div>
+        </details>
+        <div class="card-related">
+          <a class="related-tag" href="브리핑_2026-06-11.html">🔗 Gemini 3.1 Flash-Lite — 06-11</a>
+        </div>
+        <div class="card-footer">
+          <span class="card-source">Google / 9to5Google</span>
+          <a class="card-link" href="https://llm-stats.com/llm-updates" target="_blank">↗ 원문</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="모델·기술">
+      <div class="card-img-fallback">"모델·기술"</div>
+      <div class="card-body">
+        <div class="card-cat">"모델·기술"</div>
+        <div class="card-title">Anthropic Project Glasswing — Claude Mythos Preview, 선정 기관 대상 취약점 탐색 개시</div>
+        <div class="card-summary">AWS·Apple·Cisco·Google·JPMorgan·Microsoft 등 참여. 미출시 프런티어 모델 보안 강화 목적</div>
+        <details>
+          <summary>▸ 상세 보기</summary>
+          <div class="card-detail">Anthropic이 Project Glasswing을 통해 미출시 프런티어 모델 Claude Mythos Preview에 대한 제한적 접근을 시작했습니다. AWS, Apple, Cisco, Google, JPMorgan Chase, Microsoft 등 선정된 기관이 핵심 소프트웨어 취약점을 발견·수정하는 역할을 맡습니다. 정식 출시 전 보안을 강화하기 위한 통제된 협력 프로그램입니다.</div>
+        </details>
+        <div class="card-related">
+          <a class="related-tag" href="브리핑_2026-06-11.html">🔗 Glasswing 발표 — 06-11</a>
+        </div>
+        <div class="card-footer">
+          <span class="card-source">Anthropic</span>
+          <a class="card-link" href="https://aiweekly.co/ai-news-today/anthropic-news" target="_blank">↗ 원문</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 정책·산업 -->
+  <div class="section-title" data-sec="정책·산업">"정책·산업"</div>
+  <div class="grid" data-sec="정책·산업">
+
+    <div class="card" data-cat="정책·산업">
+      <div class="card-img-fallback">"정책·산업"</div>
+      <div class="card-body">
+        <div class="card-cat">"정책·산업"</div>
+        <div class="card-title">콜로라도 AI법, 6월 30일 발효 — 미국 주(州) 최초 포괄적 AI 거버넌스</div>
+        <div class="card-summary">교육·의료·고용 등 고위험 AI 감사·공시 의무. 연방 의회선 주법 3년 금지 법안 추진 중</div>
+        <details>
+          <summary>▸ 상세 보기</summary>
+          <div class="card-detail">미국 콜로라도주 AI법이 6월 30일 발효됩니다. 교육, 고용, 의료, 주택, 보험, 법률 서비스 등 고위험 AI 시스템 개발·배포자에게 리스크 관리 프로그램 구축, 소비자 공시, 알고리즘 차별 완화 의무를 부과합니다. 한편 연방 의회 법안은 AI 모델 개발을 대상으로 하는 주법을 3년간 금지하는 조항을 담아 충돌이 예상됩니다.</div>
+        </details>
+        <div class="card-footer">
+          <span class="card-source">Cooley / Wilson Sonsini</span>
+          <a class="card-link" href="https://www.cooley.com/news/insight/2026/2026-04-24-state-ai-laws-where-are-they-now" target="_blank">↗ 원문</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="정책·산업">
+      <div class="card-img-fallback">"정책·산업"</div>
+      <div class="card-body">
+        <div class="card-cat">"정책·산업"</div>
+        <div class="card-title">EU, AI 생성 콘텐츠 라벨링 규범 발표 — 8월부터 고위험 AI 투명성 의무화</div>
+        <div class="card-summary">6월 10일 규범 공표. 딥페이크·합성 콘텐츠 명시적 표시 의무. 8월 2일 EU AI법 본격 시행</div>
+        <details>
+          <summary>▸ 상세 보기</summary>
+          <div class="card-detail">유럽위원회가 6월 10일 AI 생성 콘텐츠 표시·라벨링 규범을 발표했습니다. 딥페이크, 합성 오디오·비디오에 명확한 표시가 의무화됩니다. 8월 2일부터는 EU AI법상 고위험 AI 시스템에 대한 투명성 요건과 규정 준수 의무가 본격 시행되며, 기업들은 컴플라이언스 체계를 갖춰야 합니다.</div>
+        </details>
+        <div class="card-related">
+          <a class="related-tag" href="브리핑_2026-06-11.html">🔗 EU AI법 동향 — 06-11</a>
+        </div>
+        <div class="card-footer">
+          <span class="card-source">European Commission</span>
+          <a class="card-link" href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank">↗ 원문</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 국내 -->
+  <div class="section-title" data-sec="국내">"국내"</div>
+  <div class="grid" data-sec="국내">
+
+    <div class="card" data-cat="국내">
+      <div class="card-img-fallback">"국내"</div>
+      <div class="card-body">
+        <div class="card-cat">"국내"</div>
+        <div class="card-title">삼성전자, 오늘부터 ChatGPT·Gemini Enterprise·Claude 사내 전면 허용</div>
+        <div class="card-summary">생성형 AI 3종 업무 공식 사용 개시. 'AI Transformation' 전략 본격 가동</div>
+        <details>
+          <summary>▸ 상세 보기</summary>
+          <div class="card-detail">삼성전자가 6월 12일부터 ChatGPT, Gemini Enterprise, Claude 등 생성형 AI 3종의 사내 업무 사용을 공식 허용합니다. 'AI 전환(AI Transformation)' 전략의 일환으로 일하는 방식을 AI 중심으로 재편하는 것이 목표입니다. 샘 올트먼 방한과 맞물려 삼성과의 스타게이트 프로젝트 협력도 함께 논의됩니다.</div>
+        </details>
+        <div class="card-related">
+          <a class="related-tag" href="브리핑_2026-06-11.html">🔗 삼성 AI 대전환 선언 — 06-11</a>
+        </div>
+        <div class="card-footer">
+          <span class="card-source">전자신문 / Samsung Newsroom</span>
+          <a class="card-link" href="https://news.samsung.com/kr/" target="_blank">↗ 원문</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="국내">
+      <div class="card-img-fallback">"국내"</div>
+      <div class="card-body">
+        <div class="card-cat">"국내"</div>
+        <div class="card-title">샘 올트먼 방한 — 삼성·네이버·카카오와 연쇄 AI 협력 논의</div>
+        <div class="card-summary">스타게이트 협력·클라우드 파트너십·카카오톡 AI 서비스 통합 등 핵심 안건 협의</div>
+        <details>
+          <summary>▸ 상세 보기</summary>
+          <div class="card-detail">OpenAI CEO 샘 올트먼이 방한해 국내 주요 기업과 연쇄 협력 논의에 나섭니다. 삼성전자와는 생성형 AI 서비스 도입 및 스타게이트 프로젝트 협력을, 네이버와는 클라우드·데이터센터 협력을, 카카오와는 카카오톡 기반 AI 서비스 협력을 추진할 것으로 알려졌습니다.</div>
+        </details>
+        <div class="card-related">
+          <a class="related-tag" href="브리핑_2026-06-11.html">🔗 네이버 에이전트N — 06-11</a>
+        </div>
+        <div class="card-footer">
+          <span class="card-source">연합뉴스 / 이투데이</span>
+          <a class="card-link" href="https://v.daum.net/v/20260212104924316" target="_blank">↗ 원문</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="국내">
+      <div class="card-img-fallback">"국내"</div>
+      <div class="card-body">
+        <div class="card-cat">"국내"</div>
+        <div class="card-title">SKT, MWC 2026 풀스택 AI 공개 — 울산 하이퍼스케일 AIDC 구축 본격화</div>
+        <div class="card-summary">통신·AI 통합 글로벌 공략. AWS·SK그룹과 국내 최대 AI 전용 데이터센터 착공, B200 GPUaaS '해인' 운영</div>
+        <details>
+          <summary>▸ 상세 보기</summary>
+          <div class="card-detail">SK텔레콤이 MWC 2026에서 통신과 AI를 전 영역에 통합한 '풀스택 AI'를 공개하며 글로벌 시장 공략을 선언했습니다. AWS, SK그룹 멤버사들과 함께 울산에 국내 최대 하이퍼스케일 AI 전용 데이터센터(AIDC) 구축을 공식화했으며, 최신 B200 GPU 기반 소버린 GPUaaS '해인'도 운영 중입니다.</div>
+        </details>
+        <div class="card-related">
+          <a class="related-tag" href="브리핑_2026-06-11.html">🔗 SKT 울산 AIDC — 06-11</a>
+        </div>
+        <div class="card-footer">
+          <span class="card-source">딜사이트 / SKT 뉴스룸</span>
+          <a class="card-link" href="https://dealsite.co.kr/articles/157679" target="_blank">↗ 원문</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="국내">
+      <div class="card-img-fallback">"국내"</div>
+      <div class="card-body">
+        <div class="card-cat">"국내"</div>
+        <div class="card-title">슈퍼브AI 초격차 스타트업 선정 — CB인사이트 세계 100대 AI 기업에 한국 4개사 역대 최다</div>
+        <div class="card-summary">'이머징 AI+X 톱100' 발표. 비수도권 스타트업 35.5%로 역대 최고</div>
+        <details>
+          <summary>▸ 상세 보기</summary>
+          <div class="card-detail">비전 AI 전문 기업 슈퍼브에이아이가 중기부 '초격차 스타트업' AI 모델·인프라 부문에 선정됐습니다. CB인사이트가 발표한 '세계 100대 AI 기업'에는 역대 최다인 한국 스타트업 4개사가 포함됐습니다. 한국인공지능산업협회는 '2026 이머징 AI+X 톱100' 기업 명단을 공개했으며, 비수도권 초격차 스타트업 비율도 35.5%로 역대 최고를 기록했습니다.</div>
+        </details>
+        <div class="card-footer">
+          <span class="card-source">스타트업레시피 / 네이트뉴스</span>
+          <a class="card-link" href="https://startuprecipe.co.kr/archives/5819548" target="_blank">↗ 원문</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="국내">
+      <div class="card-img-fallback">"국내"</div>
+      <div class="card-body">
+        <div class="card-cat">"국내"</div>
+        <div class="card-title">한국 제안 AI·6G 보안 표준 14건 ITU-T 승인 — 글로벌 표준화 주도권 확보</div>
+        <div class="card-summary">과기부, 신규 표준화 항목 14건 승인 및 국제표준 최종 채택. AI·6G 보안 분야 입지 강화</div>
+        <details>
+          <summary>▸ 상세 보기</summary>
+          <div class="card-detail">과학기술정보통신부가 ITU-T 국제회의에서 한국이 제안한 신규 표준화 항목 14건이 승인되고 국제표준이 최종 채택됐다고 밝혔습니다. AI 및 6G 보안 분야 표준화를 주도하는 이번 성과로 한국의 글로벌 정보보호 기술 입지가 강화될 전망입니다.</div>
+        </details>
+        <div class="card-footer">
+          <span class="card-source">이투데이 / 과기부</span>
+          <a class="card-link" href="https://www.etoday.co.kr/news/view/2593062" target="_blank">↗ 원문</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 연구·논문 -->
+  <div class="section-title" data-sec="연구·논문">"연구·논문"</div>
+  <div class="grid" data-sec="연구·논문">
+
+    <div class="card" data-cat="연구·논문">
+      <div class="card-img-fallback">"연구·논문"</div>
+      <div class="card-body">
+        <div class="card-cat">"연구·논문"</div>
+        <div class="card-title">Google TurboQuant (ICLR 2026) — KV 캐시 메모리 오버헤드 대폭 절감</div>
+        <div class="card-summary">PolarQuant + 양자화 Johnson-Lindenstrauss 압축 결합. 온디바이스 AI·데이터센터 비용 절감 기대</div>
+        <details>
+          <summary>▸ 상세 보기</summary>
+          <div class="card-detail">Google 연구팀이 ICLR 2026에서 TurboQuant를 공개했습니다. LLM 추론 시 KV 캐시로 인한 메모리 오버헤드를 PolarQuant 벡터 회전과 양자화 Johnson-Lindenstrauss 압축 방법을 결합한 2단계 프로세스로 대폭 줄입니다. 이 돌파구는 순수 파라미터 확장에서 효율성 중심 AI 개발로의 전환을 가속하며, 온디바이스 AI와 데이터센터 비용 절감에 큰 시사점을 줍니다.</div>
+        </details>
+        <div class="card-footer">
+          <span class="card-source">Google / ICLR 2026</span>
+          <a class="card-link" href="https://arxiv.org/list/cs.AI/current" target="_blank">↗ 원문</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="연구·논문">
+      <div class="card-img-fallback">"연구·논문"</div>
+      <div class="card-body">
+        <div class="card-cat">"연구·논문"</div>
+        <div class="card-title">청화대·Microsoft Research, O-Voxel로 3D 생성 모델링 혁신 — 복잡 형상 정밀 표현</div>
+        <div class="card-summary">기존 모델 대비 기하학 정확도·품질 모두 탁월. 게임·XR·제조 분야 응용 기대</div>
+        <details>
+          <summary>▸ 상세 보기</summary>
+          <div class="card-detail">청화대, Microsoft Research 등 공동 연구팀이 3D 생성 모델링에 새로운 O-Voxel 표현 방식을 적용한 연구를 발표했습니다. O-Voxel은 복잡한 형상과 표면 속성을 정확하게 포착하는 새로운 3D 표현 방식으로, 기존 모델들을 기하학적 정확도와 품질 양 측면에서 크게 앞섭니다. 게임, XR, 제조업 등 다양한 산업 분야 응용이 기대됩니다.</div>
+        </details>
+        <div class="card-footer">
+          <span class="card-source">arXiv / Microsoft Research</span>
+          <a class="card-link" href="https://arxiv.org/list/cs.AI/current" target="_blank">↗ 원문</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function filterCards(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (cat === 'all') {
+    document.querySelectorAll('.card, .grid, .section-title').forEach(el => el.style.display = '');
+    return;
+  }
+  document.querySelectorAll('.card').forEach(card => {
+    card.style.display = card.dataset.cat === cat ? '' : 'none';
+  });
+  document.querySelectorAll('.grid').forEach(grid => {
+    const vis = [...grid.querySelectorAll('.card')].some(c => c.style.display !== 'none');
+    grid.style.display = vis ? '' : 'none';
+    const title = grid.previousElementSibling;
+    if (title && title.classList.contains('section-title')) title.style.display = vis ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
