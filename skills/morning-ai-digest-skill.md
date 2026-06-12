@@ -76,7 +76,7 @@ index.json 구조:
   - HTML 파일이 존재하면: 클릭 가능한 링크로 표시 (`브리핑_YYYY-MM-DD.html`)
   - HTML 파일이 없으면(2주 지나 삭제): "YYYY-MM-DD 브리핑에서 다뤘던 내용" 텍스트만 표시
 
-**HTML 디자인 규칙** (Virgil Abloh / Off-White 미학):
+**HTML 디자인 규칙** (Yeezy / Off-White 미학 — 순수 블랙):
 
 폰트:
 ```html
@@ -85,80 +85,68 @@ index.json 구조:
 - 본문·헤드라인: `'Josefin Sans', sans-serif`
 - 메타·태그·소스: `'Space Mono', monospace`
 
-색상 (CSS 변수):
+색상 (항상 다크, prefers-color-scheme 무관):
 ```css
+body { background: #050505; color: #fff; margin: 0; }
 :root {
-  --acc: #BA7517;        /* 앰버 포인트 컬러 (라이트/다크 공통) */
-  --bg: #f7f6f3;
-  --surface: #ffffff;
-  --border: #e0ddd6;
-  --text: #0a0a0a;
-  --muted: #6b6b6b;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f0f0f;
-    --surface: #171717;
-    --border: #2a2a2a;
-    --text: #f0f0f0;
-    --muted: #888888;
-  }
+  --bg: #050505;
+  --surface: #0f0f0f;
+  --border: #1a1a1a;
+  --text: #ffffff;
+  --muted: #555555;
+  --sub: #999999;
 }
 ```
 
 레이아웃:
-- 최대 너비: 780px, 가운데 정렬
+- 최대 너비: 800px, 가운데 정렬
 - 바디 패딩: 1.5rem 1rem
-- `border-radius: 0` 전체 (Off-White 스타일 — 모서리 둥글게 하지 않음)
-- 카드 그리드 간격: `gap: 1px; background: var(--border)` (1px 그리드라인)
+- `border-radius: 0` 전체
+- 카드 그리드 간격: `gap: 1px; background: #1a1a1a` (1px 그리드라인)
 
 컴포넌트:
 
 **헤더**:
-```html
-<header>
-  <div class="lbl"><!-- "ARTIFICIAL INTELLIGENCE" / DAILY BRIEFING --></div>
-  <div class="ttl">"AI" <span class="acc">DIGEST</span></div>
-  <div class="meta"><!-- 날짜 · 시간 KST · VOL.N --></div>
-  <!-- 앰버 사선 스트라이프: height 3px, repeating-linear-gradient(90deg, var(--acc) 0 8px, transparent 8px 14px) -->
-</header>
-```
-- `lbl`: Space Mono, 10px, letter-spacing .15em, muted
-- `ttl`: Josefin Sans 700, 38px, letter-spacing -.01em — `"AI"` 따옴표 포함
-- `acc`: color var(--acc) (앰버)
-- `meta`: Space Mono, 10px, muted, 우측 정렬
+- `lbl`: Space Mono, 11px, letter-spacing .14em, color #555 — `"ARTIFICIAL INTELLIGENCE" / DAILY BRIEFING`
+- `ttl`: Josefin Sans 700, 44px, letter-spacing -.02em — `"AI" DIGEST` (DIGEST는 opacity .3)
+- `meta`: Space Mono, 12px, color #555, 우측 정렬 — 날짜·시간 KST·VOL.N
+- 하단 사선 스트라이프: `height: 2px; background: repeating-linear-gradient(90deg,#fff 0 6px,transparent 6px 12px); opacity: .07`
 
 **통계 스트립** (헤더 바로 아래):
-- 4컬럼 그리드 / `gap: 1px; background: var(--border)`
-- 각 셀: surface 배경, 숫자(22px 700), 라벨(Space Mono 9px, `"STORIES"` 형식 따옴표 포함)
+- 4컬럼 그리드 / `gap: 1px; background: #1a1a1a`
+- 각 셀: `background: #050505`, 숫자 26px 700 white, 라벨 Space Mono 11px #444 — `"STORIES"` 형식
 
 **핵심 3줄 박스**:
-- surface 배경, `border: 2px solid var(--text)`, border-radius 0
-- 번호: Space Mono, 앰버 색, `01. 02. 03.` 형식
-- 텍스트: Josefin Sans 600, 14px
-- 라벨: `"TODAY'S KEY POINTS"` — Space Mono, 10px, muted
+- `background: #050505; border: 1px solid #333`, border-radius 0
+- 번호: Space Mono, white, `01. 02. 03.` 형식
+- 텍스트: Josefin Sans 600, 15px, color #fff
+- 라벨: `"TODAY'S KEY POINTS"` — Space Mono, 11px, #444
 
 **카테고리 필터 버튼**:
-- `border: 1px solid var(--border)`, border-radius 0
-- active/hover: `background: var(--text); color: var(--surface)`
-- 카테고리명 따옴표 감싸기: `"ALL"` `"기업소식"` `"모델·기술"` `"정책·산업"` `"연구·논문"`
+- `border: 1px solid #333`, border-radius 0, color #555, background transparent
+- active/hover: `background: #fff; color: #000; border-color: #fff`
+- 카테고리명 따옴표 포함: `"ALL"` `"기업소식"` `"모델·기술"` `"정책·산업"` `"연구·논문"`
 
 **카드 그리드**:
-- `display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1px; background: var(--border)`
-- 각 카드: surface 배경, padding 1.1rem
+- `display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; background: #1a1a1a`
 
-**카드 내부**:
-- 카테고리: Space Mono, 10px, var(--acc), 따옴표 — `"기업소식"`
-- 헤드라인: Josefin Sans 700, 14px, line-height 1.4
-- 요약 포인트: `—` 불릿 (앰버 색), Josefin Sans 300, 12px / `<ul>` 스타일 커스텀
-- 더보기: `<details><summary>` — `▸ 상세 보기` / `▾ 닫기`, Josefin Sans 600, 앰버 색
-- 원문 링크: `↗ 원문` — Space Mono, 10px
-- 카드 하단 푸터: Space Mono 9px — 좌측 출처, 우측 시간
-- 관련 이전 뉴스: `border: 1px solid var(--border)` pill, Space Mono 9px, border-radius 0
+**카드 이미지** (각 카드 최상단):
+- `<img>` 또는 `<div class="card-img">` — 뉴스 기사의 og:image URL 사용
+- 크기: `width: 100%; height: 160px; object-fit: cover; display: block`
+- 이미지 없을 때 폴백: `background: #111; height: 160px; display: flex; align-items: center; justify-content: center`
+- 폴백 텍스트: Space Mono, 11px, #333, 카테고리명 표시
+- 이미지 수집 방법: 원문 URL에서 `<meta property="og:image">` 태그 파싱 또는 WebFetch로 첫 번째 이미지 URL 추출
 
-**섹션 구분자**:
-- `"카테고리명"` + 가로선 — Josefin Sans 700, 12px, letter-spacing .15em
-- `border-bottom: 1px solid var(--border)` 대신 `background: var(--border); height: 1px`
+**카드 내부** (이미지 아래):
+- padding: 1.4rem
+- 카테고리: Space Mono, 11px, #444, 따옴표 — `"기업소식"`
+- 헤드라인: Josefin Sans 700, 17px, line-height 1.45, color #fff
+- 요약 포인트: `—` 불릿 (color #333), Josefin Sans 400, 14px, color #999, line-height 1.7
+- 더보기: `<details><summary>` — Space Mono 11px, color #444 → hover #aaa
+- 상세 내용: Josefin Sans 300, 14px, color #666, line-height 1.75
+- 원문 링크: `↗ 원문` — Space Mono, 11px, color #888 → hover #fff
+- 카드 하단 푸터: Space Mono 11px — 좌측 출처 #444, 우측 시간 #444
+- 관련 이전 뉴스: `border: 1px solid #222`, Space Mono 10px, color #444, border-radius 0, padding 3px 8px
 
 ### 5단계: 인덱스 업데이트 및 오래된 파일 정리
 
