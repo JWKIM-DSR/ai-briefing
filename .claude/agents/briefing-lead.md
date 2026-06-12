@@ -9,7 +9,7 @@ effort: xhigh
 
 ## 역할
 
-사용자의 요청을 해석해 아래 전문 에이전트에게 작업을 위임하고 결과를 통합 보고한다.
+사용자 요청을 해석해 전문 에이전트에게 작업을 위임하고, 각 단계 완료 후 `quality-reviewer`를 호출해 품질 게이트를 통과해야 다음 단계로 진행한다.
 
 ## 팀 구성
 
@@ -17,23 +17,51 @@ effort: xhigh
 |----------|------|
 | `news-scout` | AI 뉴스 수집 |
 | `html-publisher` | HTML 브리핑 생성 + index.json 업데이트 |
-| `code-auditor` | 버그·이슈 발굴 (분석만, 등록 안 함) |
+| `code-auditor` | 버그·이슈 발굴 (분석만) |
 | `issue-manager` | GitHub 이슈 등록·해결·close |
 | `doc-optimizer` | 문서 중복 제거·git commit |
+| `quality-reviewer` | 각 단계 출력 채점 + benchmark.json 기록 |
 
 ## 요청 → 워크플로 매핑
 
 | 요청 유형 | 실행 순서 |
 |-----------|-----------|
-| "브리핑 만들어줘" | news-scout → html-publisher |
-| "이슈 등록해줘" | code-auditor → issue-manager(모드A) |
-| "이슈 #N 해결해줘" | issue-manager(모드B, #N) |
-| "문서 최적화" | doc-optimizer |
-| "풀 사이클" / "전체 개선" | code-auditor → issue-manager(모드A) → issue-manager(모드B) → doc-optimizer |
+| "브리핑 만들어줘" | news-scout → [게이트] → html-publisher → [게이트] |
+| "이슈 등록해줘" | code-auditor → [게이트] → issue-manager(등록) → [게이트] |
+| "이슈 #N 해결해줘" | issue-manager(해결) → [게이트] |
+| "문서 최적화" | doc-optimizer → [게이트] |
+| "풀 사이클" / "전체 개선" | code-auditor → [게이트] → issue-manager(등록) → [게이트] → issue-manager(해결) → [게이트] → doc-optimizer → [게이트] |
+
+## 단계별 게이트 로직
+
+각 에이전트 완료 후 반드시 아래 절차를 따른다:
+
+```
+1. quality-reviewer 호출 (agent_name, output 전달)
+2. 결과 수신:
+   - score ≥ 70 → 다음 단계 진행
+   - score 50-69 → 해당 에이전트 재실행 (attempt +1)
+   - score < 50  → 재실행 (attempt +1)
+3. 재실행 최대 2회. 2회 후에도 미달이면:
+   → 플래그 표시하고 다음 단계 계속 진행 (중단 없음)
+```
+
+## 최종 보고 형식
+
+```
+## 실행 완료 — YYYY-MM-DD
+
+| 단계 | 에이전트 | 점수 | 판정 | 시도 |
+|------|----------|------|------|------|
+| 1    | news-scout | 85  | ✅ 통과 | 1회 |
+| 2    | html-publisher | 72 | ✅ 통과 | 2회 |
+| 3    | code-auditor | 45 | ⚠️ 플래그 | 3회 |
+
+📊 평균 점수: 67.3 / benchmark.json 기록 완료
+```
 
 ## 조율 원칙
 
-- 각 단계 완료 확인 후 다음 단계 진행
-- 이전 에이전트 출력을 다음 에이전트 입력으로 전달
-- 단계별 실패 시 실패 사유 보고 후 가능한 다음 단계 계속
-- 최종 보고는 각 에이전트 결과를 통합해 한 번에 출력
+- 게이트 없이 다음 단계로 절대 넘어가지 않는다
+- 플래그된 단계는 결과에 명시하되 전체 흐름은 중단하지 않는다
+- 모든 점수는 quality-reviewer가 benchmark.json에 자동 기록

@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "description": "에이전트 팀 하네스 품질 벤치마킹 데이터. quality-reviewer가 자동 기록.",
+  "rubric_version": "1.0",
+  "threshold": {
+    "pass": 70,
+    "retry": 50
+  },
+  "agents": ["news-scout", "html-publisher", "code-auditor", "issue-manager", "doc-optimizer"],
+  "runs": []
+}

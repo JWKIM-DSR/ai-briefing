@@ -64,6 +64,29 @@ briefing-lead (오케스트레이터)
 | `code-auditor` | Read, Grep, Glob | medium |
 | `issue-manager` | Bash, Read, Write | medium |
 | `doc-optimizer` | Read, Edit, Grep, Glob, Bash | low |
+| `quality-reviewer` | Read, Write, Edit | medium |
+
+### 품질 게이트 (단계별)
+
+각 에이전트 완료 후 `quality-reviewer`가 채점 → 결과를 `benchmark.json`에 누적 기록.
+
+| 점수 | 판정 | 동작 |
+|------|------|------|
+| ≥ 70 | ✅ 통과 | 다음 단계 진행 |
+| 50–69 | 🔁 재실행 | 해당 에이전트 재실행 (최대 2회) |
+| < 50 | ⚠️ 플래그 | 2회 재시도 후에도 미달 시 플래그·진행 |
+
+### 루브릭 요약
+
+| 에이전트 | 주요 평가 항목 |
+|----------|----------------|
+| `news-scout` | 기사 수·카테고리 균형·신선도·관련성 |
+| `html-publisher` | 파일 생성·템플릿 준수·내용 완전성·index.json 업데이트 |
+| `code-auditor` | 이슈 수·구체성·분류 정확도 |
+| `issue-manager` | 등록 성공률·댓글 품질·close 완료율 |
+| `doc-optimizer` | 변경 유효성·git commit·범위 준수 |
+
+벤치마킹 데이터: `benchmark.json` (영구 보관, 삭제 금지)
 
 ---
 
